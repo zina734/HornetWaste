@@ -25,7 +25,7 @@ public class UI {
 
     public void createMainField() {
         window = new JFrame();
-        window.setSize(2560, 1440);
+        window.setSize(1920, 1080);             // set size of window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.white);
         window.setLayout(null);
@@ -33,15 +33,15 @@ public class UI {
 
     public void createBackground() {
         panel[1] = new JPanel();                // create new JPanel in panel
-        panel[1].setBounds(50, 50, 700, 350);       // set bounds for this panel
+        panel[1].setBounds(50, 50, 1920, 1080);       // set bounds for this image
         panel[1].setLayout(null);
-        window.add(panel[1]);
+        window.add(panel[1]);                               // adds panel to UI
 
 
         label[1] = new JLabel();        // create new JLabel in label
-        label[1].setBounds(0, 0, 700, 350);
+        label[1].setBounds(0, 0, 1920, 1080);               // sets bounds for this image
 
-        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/honeybarrel.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/honeybarrel1080.jpg"));      // choose image
         label[1].setIcon(icon);
 
         panel[1].add(label[1]);
