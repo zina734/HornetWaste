@@ -46,7 +46,7 @@ public class UI {
     }
 
     public void createButton(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
-            JLabel button = new JLabel();                   // object label
+        JLabel button = new JLabel();                   // object label
         button.setBounds(objx, objy, objWidth, objHeight);  // object icon
 
         ImageIcon objIcon = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
@@ -86,7 +86,7 @@ public class UI {
     public void screen() {              // outputs the start screen
         // Screen 1
         createBackground(1, "images/background.png");          // set background image
-        createButton(1, 440, 140, 200, 200, "start.png");       // set start button
+        createButton(1, 440, 140, 250, 100, "start.png");       // set start button
 
         // Screen 2
         //createBackground();
