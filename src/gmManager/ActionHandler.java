@@ -16,7 +16,12 @@ public class ActionHandler implements ActionListener {
         String action = e.getActionCommand();
 
         switch(action) {
-
+            case "startScreen":
+                gm.sceneSwap.startScreen();
+                break;
+            case "levelScreen": // level screen
+                gm.sceneSwap.levelScreen();
+                break;
         }
     }
 }
