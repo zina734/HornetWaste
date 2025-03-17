@@ -21,4 +21,14 @@ public class SceneChanger {
         game.ui.bgPanel[6].setVisible(true);
         game.ui.bgPanel[7].setVisible(true);*/
     }
+
+    public void levelOne() {
+        game.ui.bgPanel[2].setVisible(false);       // turn off start screen
+        game.ui.bgPanel[3].setVisible(true);        // turn on level screen
+        /*game.ui.bgPanel[3].setVisible(true);
+        game.ui.bgPanel[4].setVisible(true);
+        game.ui.bgPanel[5].setVisible(true);
+        game.ui.bgPanel[6].setVisible(true);
+        game.ui.bgPanel[7].setVisible(true);*/
+    }
 }
