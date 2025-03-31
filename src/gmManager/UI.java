@@ -243,6 +243,8 @@ public class UI {
 
                                     bgPanel[levelScreenNum].setVisible(true);
                                     window.add(bgPanel[levelScreenNum]);
+
+                                    //wastePanel
                                 }
                             }
 
