@@ -35,15 +35,10 @@ public class UI {
         window.setLayout(null);                                // Layout is set to null, may change later to gridbaglayout for resizing
     }
     public void startScreen() {              // outputs the start screen
-        // Screen 1
-        createBackground(1, "images/background.png");                                            // set background image
-        createStartscreen(1, 440, 140, 250, 100, "start.png");       // set start button
-        bgPanel[1].add(bgLabel[1]);
-
-        // Screen 2
-        createBackground(2, "images/Levelscreen.png");
-        createLevelSelect(2, 650, 300, 250, 100, "images/start.png", "levelScreen");
-        bgPanel[2].add(bgLabel[2]);
+        // create background and button
+        createBackground(0, "images/background.png");                                            // set background image
+        createStartButton(0, 440, 140, 250, 100, "start.png");       // set start button
+        bgPanel[0].add(bgLabel[0]);
 
     }
 
@@ -62,13 +57,14 @@ public class UI {
 
     }
 
-    public void createStartscreen(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
-        JLabel button = new JLabel();
-        button.setBounds(objx, objy, objWidth, objHeight);
+    public void createStartButton(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
+        JLabel button = new JLabel();                                   // start button
+        button.setBounds(objx, objy, objWidth, objHeight);              // create button's bounds
 
         ImageIcon objIcon = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));
         button.setIcon(objIcon);
 
+        // add functionality to the button
         button.addMouseListener(new MouseListener() {
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -87,54 +83,8 @@ public class UI {
                     // Clear the panel before adding new components
                     bgPanel[newScreenNum].removeAll();
 
-                    // Add five buttons for levels
-                    for (int i = 0; i < 5; i++) {
-                        final int level = i + 1; // Assign each button a level number
-                        JLabel levelButton = new JLabel();
-
-                        if (i % 2 == 0) {
-                            levelButton.setBounds(200 + (i * 150), 60, 200, 75); // Adjust positioning
-                        } else {
-                            levelButton.setBounds(150 + (i * 150), 170, 200, 75); // Adjust positioning
-                        }
-
-                        URL objURL = getClass().getClassLoader().getResource("images/start.png");
-                        if (objURL != null) {
-                            levelButton.setIcon(new ImageIcon(objURL));
-                        } else {
-                            System.out.println("Image not found: start.png");
-                        }
-
-                        // Make each level button go to the firstlevelscreen
-                        levelButton.addMouseListener(new MouseListener() {
-                            public void mousePressed(MouseEvent e) {
-                                if (SwingUtilities.isLeftMouseButton(e)) {
-
-                                    createLevelButton("images/firstlevelscreen.png", newScreenNum);        // create level button functionalities
-
-                                    // wastePanel
-                                }
-                            }
-
-                            public void mouseClicked(MouseEvent e) {}
-                            public void mouseReleased(MouseEvent e) {}
-                            public void mouseEntered(MouseEvent e) {}
-                            public void mouseExited(MouseEvent e) {}
-                        });
-
-                        bgPanel[newScreenNum].add(levelButton);
-                    }
-
-                    // Add the background image LAST so buttons are on top
-                    bgLabel[newScreenNum] = new JLabel();
-                    bgLabel[newScreenNum].setBounds(0, 0, 1112, 624);
-                    ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png"));
-                    bgLabel[newScreenNum].setIcon(newBgIcon);
-                    bgPanel[newScreenNum].add(bgLabel[newScreenNum]);
-
-                    // Show the level selection screen
-                    bgPanel[newScreenNum].setVisible(true);
-                    window.add(bgPanel[newScreenNum]);
+                    // Create level select screen
+                    createLevelSelect(newScreenNum);
 
                     // Refresh UI
                     bgPanel[newScreenNum].revalidate();
@@ -150,6 +100,57 @@ public class UI {
 
         bgPanel[num].add(button);
         bgPanel[num].add(bgLabel[num]);
+    }
+
+    public void createLevelSelect(int levelScreen) {
+        // Add five buttons for levels
+        for (int i = 0; i < 5; i++) {
+            JLabel levelButton = new JLabel();
+
+            if (i % 2 == 0) {
+                levelButton.setBounds(200 + (i * 150), 60, 200, 75); // Adjust positioning
+            } else {
+                levelButton.setBounds(150 + (i * 150), 170, 200, 75); // Adjust positioning
+            }
+
+            URL objURL = getClass().getClassLoader().getResource("images/start.png");
+            if (objURL != null) {
+                levelButton.setIcon(new ImageIcon(objURL));
+            } else {
+                System.out.println("Image not found: start.png");
+            }
+
+            // Make each level button go to the firstlevelscreen
+            levelButton.addMouseListener(new MouseListener() {
+                public void mousePressed(MouseEvent e) {
+                    if (SwingUtilities.isLeftMouseButton(e)) {
+                        createLevelButton("images/firstlevelscreen.png", levelScreen);        // create level button functionalities
+
+                        // wastePanel
+                    }
+                }
+
+                public void mouseClicked(MouseEvent e) {}
+                public void mouseReleased(MouseEvent e) {}
+                public void mouseEntered(MouseEvent e) {}
+                public void mouseExited(MouseEvent e) {}
+            });
+
+            bgPanel[levelScreen].add(levelButton);
+
+        }
+
+        // add background last so the other things are on top
+        bgLabel[levelScreen] = new JLabel();
+        bgLabel[levelScreen].setBounds(0, 0, 1112, 624);
+        ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png"));
+        bgLabel[levelScreen].setIcon(newBgIcon);
+        bgPanel[levelScreen].add(bgLabel[levelScreen]);
+
+        // Show the level selection screen
+        bgPanel[levelScreen].setVisible(true);
+        window.add(bgPanel[levelScreen]);
+
     }
 
     public void createLevelButton(String name, int newScreenNum) {              // level button selector
@@ -172,26 +173,6 @@ public class UI {
 
         bgPanel[levelScreenNum].setVisible(true);
         window.add(bgPanel[levelScreenNum]);
-    }
-
-
-    public void createLevelSelect(int bgNum, int x, int y, int width, int height, String name, String cmd) {
-        ImageIcon Level[] = new ImageIcon[10];
-        JButton levelButton[] = new JButton[10];
-
-        for (int i = 3; i < 8; ++i) {
-            Level[i] = new ImageIcon(getClass().getClassLoader().getResource(name));
-            levelButton[i] = new JButton();
-            levelButton[i].setIcon(Level[i]);
-            levelButton[i].revalidate();
-
-            bgLabel[bgNum].setIcon(Level[i]);
-
-            bgPanel[bgNum].add(levelButton[i]);         // add levelButton[]
-            bgPanel[bgNum].add(bgLabel[bgNum]);         // add buttons to level select bgLabel
-
-        }
-
     }
 
 }
