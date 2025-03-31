@@ -3,39 +3,55 @@ package gmManager;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.DefaultButtonModel;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import java.net.URL;
+import javax.swing.JButton;
 
 public class UI {
-    gmManager game;             // game executor
-    JFrame window;                  // createMainField() UI window
+    gmManager game;                 // Make a gmManager object to be able to access fields in Actionhandler and Scenechanger
+    JFrame window;                  // title bar, close/minimize/maximize buttons, and borders
 
-    public JPanel bgPanel[] = new JPanel[10];
-    public JLabel bgLabel[] = new JLabel[10];
+    public JPanel bgPanel[] = new JPanel[10];  // Background Jpanel is a container that can hold buttons
+    public JLabel bgLabel[] = new JLabel[10];  // Background Jlabel only displays individual text or images
 
-    public UI(gmManager game) {         // modify displayed UI
-        this.game = game;
+    public UI(gmManager game) {                // UI constructor
+        this.game = game;                      // define game
 
-        createMainField();
-        startScreen();
+        createMainField();                     // Sets basic window functions
+        startScreen();                         // Outputs completed screens
 
-        window.setVisible(true);
+        window.setVisible(true);               // Set window to be true when UI object is made (in gmManager)
     }
 
-    public void createMainField() {
-        window = new JFrame();
-        window.setSize(1112, 624);             // set size of window
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.getContentPane().setBackground(Color.white);
-        window.setLayout(null);
+    public void createMainField() { //
+        window = new JFrame();                                  // defining window
+        window.setSize(1112, 624);                 // set size of window
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close operation makes the exit button end the program
+        window.getContentPane().setBackground(Color.white);    // sets background to white
+        window.setLayout(null);                                // Layout is set to null, may change later to gridbaglayout for resizing
+    }
+    public void startScreen() {              // outputs the start screen
+        // Screen 1
+        createBackground(1, "images/background.png");                                            // set background image
+        createStartscreen(1, 440, 140, 250, 100, "start.png");       // set start button
+        bgPanel[1].add(bgLabel[1]);
+
+        // Screen 2
+        createBackground(2, "images/Levelscreen.png");
+        createLevelSelect(2, 650, 300, 250, 100, "images/start.png", "levelScreen");
+        bgPanel[2].add(bgLabel[2]);
+
     }
 
     public void createBackground(int num, String name) {
-        bgPanel[num] = new JPanel();                // create new JPanel in panel
+        bgPanel[num] = new JPanel();                                       // create new JPanel in panel
         bgPanel[num].setBounds(0, 0, 1920, 1080);       // set bounds for this image
-        bgPanel[num].setLayout(null);
-        window.add(bgPanel[num]);                               // adds panel to UI
+        bgPanel[num].setLayout(null);                                     //
+        window.add(bgPanel[num]);                                         // adds panel to UI
 
         bgLabel[num] = new JLabel();        // create new JLabel in label
         bgLabel[num].setBounds(0, 0, 1112, 624);               // sets bounds for this image
@@ -46,7 +62,7 @@ public class UI {
 
     }
 
-    public void createButton(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
+    public void createStartscreen(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
         JLabel button = new JLabel();
         button.setBounds(objx, objy, objWidth, objHeight);
 
@@ -176,21 +192,6 @@ public class UI {
 
         }
 
-    }
-
-    public void startScreen() {              // outputs the start screen
-        // Screen 1
-        createBackground(1, "images/background.png");          // set background image
-        createButton(1, 440, 140, 250, 100, "start.png");       // set start button
-        bgPanel[1].add(bgLabel[1]);
-
-        // Screen 2
-        createBackground(2, "images/Levelscreen.png");
-        createLevelSelect(2, 650, 300, 250, 100, "images/start.png", "levelScreen");
-        bgPanel[2].add(bgLabel[2]);
-
-        //createBackground(3, "images/firstlevelscreen.png");
-        //createLevelSelect(2, 650, 300, 250, 100, "images/start.png", "levelOne");
     }
 
 }
