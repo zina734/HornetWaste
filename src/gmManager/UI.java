@@ -37,7 +37,6 @@ public class UI {
         bgPanel[num].setLayout(null);
         window.add(bgPanel[num]);                               // adds panel to UI
 
-
         bgLabel[num] = new JLabel();        // create new JLabel in label
         bgLabel[num].setBounds(0, 0, 1112, 624);               // sets bounds for this image
 
@@ -45,137 +44,7 @@ public class UI {
         bgLabel[num].setIcon(icon);
         bgPanel[num].add(bgLabel[num]);
 
-
     }
-
-    /* public void createButton(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
-        JLabel button = new JLabel();                   // object label
-        button.setBounds(objx, objy, objWidth, objHeight);  // object icon
-
-        ImageIcon objIcon = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
-        button.setIcon(objIcon);                                                                                      // set start button to the JLabel "button"
-
-        button.addMouseListener(new MouseListener() {
-
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-
-                    //createLevelButton(2, 500, 500, 250, 100, "images/start.png", "levelScreen");
-                    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png"));      // choose image
-                    button.setIcon(null);
-                    button.revalidate();
-                    bgLabel[2].setIcon(icon);
-
-                    /*ImageIcon Level[] = new ImageIcon[10];
-                    JButton levelButton[] = new JButton[10];
-
-                    for (int i = 3; i < 8; ++i) {
-                        Level[i] = new ImageIcon(getClass().getClassLoader().getResource("images/start.png"));
-                        levelButton[i] = new JButton();
-                        levelButton[i].setIcon(Level[i]);
-                        levelButton[i].revalidate();
-
-                        levelButton[i].setBounds(500 + 100 * i, 500 + 100 * i, 250, 100);
-                        levelButton[i].setBackground(null);
-                        levelButton[i].setContentAreaFilled(false);
-                        levelButton[i].setFocusPainted(false);
-                        levelButton[i].setIcon(Level[i]);
-                        levelButton[i].addActionListener(game.handler);
-                        levelButton[i].setActionCommand("levelScreen");
-                        levelButton[i].setBorderPainted(false);
-
-                        bgLabel[2].setIcon(Level[i]);
-
-                        bgPanel[2].add(levelButton[i]);
-                        bgPanel[2].add(bgLabel[2]);
-
-                    } */
-
-                   /* // level 1
-                    JLabel button1 = new JLabel();                   // object label
-                    button1.setBounds(objx + 100, objy + 100, objWidth, objHeight);  // object icon
-
-                    ImageIcon objIcon1 = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
-                    button1.setIcon(objIcon1);
-                    // level 2
-                    JLabel button2 = new JLabel();                   // object label
-                    button2.setBounds(objx + 200, objy + 100, objWidth, objHeight);  // object icon
-
-                    ImageIcon objIcon2 = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
-                    button2.setIcon(objIcon2);
-
-                    // level 3
-                    JLabel button3 = new JLabel();                   // object label
-                    button3.setBounds(objx + 300, objy + 100, objWidth, objHeight);  // object icon
-
-                    ImageIcon objIcon3 = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
-                    button3.setIcon(objIcon3);
-
-                    // level 4
-                    JLabel button4 = new JLabel();                   // object label
-                    button4.setBounds(objx + 400, objy + 100, objWidth, objHeight);  // object icon
-
-                    ImageIcon objIcon4 = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
-                    button4.setIcon(objIcon4);
-
-                    // level 5
-                    JLabel button5 = new JLabel();                   // object label
-                    button5.setBounds(objx + 500, objy + 100, objWidth, objHeight);  // object icon
-
-                    ImageIcon objIcon5 = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));         // set start button label to "obj"
-                    button5.setIcon(objIcon5);
-
-                    bgPanel[2].add(button1);
-                    bgPanel[2].add(button2);
-                    bgPanel[2].add(button3);
-                    bgPanel[2].add(button4);
-                    bgPanel[2].add(button5);
-                    bgPanel[2].revalidate();
-                    bgPanel[2].repaint(); */
-
-                   /* bgPanel[2].setLayout(null);
-
-                    for (int i = 1; i <= 5; i++) {
-                        JLabel button = new JLabel();
-                        button.setBounds(objx + 100 * i, objy + 100, objWidth, objHeight);
-
-                        URL objURL = getClass().getClassLoader().getResource("images/" + objFile);
-                        if (objURL != null) {
-                            button.setIcon(new ImageIcon(objURL));
-                        } else {
-                            System.out.println("Image not found: " + objFile);
-                        }
-
-                        bgPanel[2].add(button);
-                    }
-
-// Refresh panel
-                    bgPanel[2].revalidate();
-                    bgPanel[2].repaint();
-
-                }
-            }
-
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            public void mouseExited(MouseEvent e) {
-
-
-            };
-        });
-        bgPanel[num].add(button);
-        bgPanel[num].add(bgLabel[num]);
-    } */
 
     public void createButton(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
         JLabel button = new JLabel();
@@ -224,27 +93,10 @@ public class UI {
                         levelButton.addMouseListener(new MouseListener() {
                             public void mousePressed(MouseEvent e) {
                                 if (SwingUtilities.isLeftMouseButton(e)) {
-                                    int levelScreenNum = newScreenNum + 1; // Define the new screen number
 
-                                    bgPanel[newScreenNum].setVisible(false); // Hide level selection screen
+                                    createLevelButton("images/firstlevelscreen.png", newScreenNum);        // create level button functionalities
 
-                                    if (bgPanel[levelScreenNum] == null) {
-                                        createBackground(levelScreenNum, "images/firstlevelscreen.png");
-                                        bgPanel[levelScreenNum].setLayout(null);
-                                    }
-
-                                    bgPanel[levelScreenNum].removeAll();
-
-                                    bgLabel[levelScreenNum] = new JLabel();
-                                    bgLabel[levelScreenNum].setBounds(0, 0, 1112, 624);
-                                    ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/firstlevelscreen.png"));
-                                    bgLabel[levelScreenNum].setIcon(levelBgIcon);
-                                    bgPanel[levelScreenNum].add(bgLabel[levelScreenNum]);
-
-                                    bgPanel[levelScreenNum].setVisible(true);
-                                    window.add(bgPanel[levelScreenNum]);
-
-                                    //wastePanel
+                                    // wastePanel
                                 }
                             }
 
@@ -284,9 +136,30 @@ public class UI {
         bgPanel[num].add(bgLabel[num]);
     }
 
+    public void createLevelButton(String name, int newScreenNum) {              // level button selector
+        int levelScreenNum = newScreenNum + 1; // Define the new screen number
+
+        bgPanel[newScreenNum].setVisible(false); // Hide level selection screen
+
+        if (bgPanel[levelScreenNum] == null) {
+            createBackground(levelScreenNum, name);
+            bgPanel[levelScreenNum].setLayout(null);
+        }
+
+        bgPanel[levelScreenNum].removeAll();
+
+        bgLabel[levelScreenNum] = new JLabel();
+        bgLabel[levelScreenNum].setBounds(0, 0, 1112, 624);
+        ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource(name));
+        bgLabel[levelScreenNum].setIcon(levelBgIcon);
+        bgPanel[levelScreenNum].add(bgLabel[levelScreenNum]);
+
+        bgPanel[levelScreenNum].setVisible(true);
+        window.add(bgPanel[levelScreenNum]);
+    }
 
 
-    public void createLevelButton(int bgNum, int x, int y, int width, int height, String name, String cmd) {
+    public void createLevelSelect(int bgNum, int x, int y, int width, int height, String name, String cmd) {
         ImageIcon Level[] = new ImageIcon[10];
         JButton levelButton[] = new JButton[10];
 
@@ -296,19 +169,10 @@ public class UI {
             levelButton[i].setIcon(Level[i]);
             levelButton[i].revalidate();
 
-           /* levelButton[i].setBounds(x + 100 * i, y + 100 * i, width, height);        // don't remember what this does so not including it
-            levelButton[i].setBackground(null);
-            levelButton[i].setContentAreaFilled(false);
-            levelButton[i].setFocusPainted(false);
-            levelButton[i].setIcon(Level[i]);
-            levelButton[i].addActionListener(game.handler);
-            levelButton[i].setActionCommand(cmd);
-            levelButton[i].setBorderPainted(false);   */
-
             bgLabel[bgNum].setIcon(Level[i]);
 
-            bgPanel[bgNum].add(levelButton[i]);
-            bgPanel[bgNum].add(bgLabel[bgNum]);
+            bgPanel[bgNum].add(levelButton[i]);         // add levelButton[]
+            bgPanel[bgNum].add(bgLabel[bgNum]);         // add buttons to level select bgLabel
 
         }
 
@@ -322,11 +186,11 @@ public class UI {
 
         // Screen 2
         createBackground(2, "images/Levelscreen.png");
-        createLevelButton(2, 650, 300, 250, 100, "images/start.png", "levelScreen");
+        createLevelSelect(2, 650, 300, 250, 100, "images/start.png", "levelScreen");
         bgPanel[2].add(bgLabel[2]);
 
         //createBackground(3, "images/firstlevelscreen.png");
-        //createLevelButton(2, 650, 300, 250, 100, "images/start.png", "levelOne");
+        //createLevelSelect(2, 650, 300, 250, 100, "images/start.png", "levelOne");
     }
 
 }
