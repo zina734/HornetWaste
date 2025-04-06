@@ -6,6 +6,7 @@ public class gmManager {
     public UI ui = new UI(this);
     public SceneChanger sceneSwap = new SceneChanger(this);
 
+
     // instantiate the UI
     public static void main(String[] args) {
         System.out.println("Hello, World! itz zina");       // super duper dumdum comment

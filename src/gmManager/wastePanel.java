@@ -13,48 +13,48 @@ import javax.swing.JPanel;
 
 public class wastePanel extends JPanel {
 
-    ImageIcon waste = new ImageIcon("images/waste1.png");
+    ImageIcon waste = new ImageIcon("images/waste1.png"); // Load image from file
 
-    final int IMG_WIDTH = waste.getIconWidth();
-    final int IMG_Height = waste.getIconHeight();
+    final int IMG_WIDTH = waste.getIconWidth();  // Get image width (not used here but available)
+    final int IMG_Height = waste.getIconHeight(); // Get image height
 
-    Point image_corner;
-    Point previousPoint;
+    Point image_corner;     // Stores current top-left position of the image
+    Point previousPoint;    // Stores previous mouse position during drag
 
-    wastePanel(){
-        image_corner = new Point(0,0);
+    wastePanel() {
+        image_corner = new Point(0, 0); // Start image at (0, 0)
 
-        ClickListener clicklistener = new ClickListener();
-        this.addMouseListener(clicklistener);
+        // Listen for initial mouse press (stores starting point for drag)
+        this.addMouseListener(new ClickListener());
 
-        DragListener dragListener = new DragListener();
-        this.addMouseMotionListener(dragListener);
-
+        // Listen for dragging movement (updates image position)
+        this.addMouseMotionListener(new DragListener());
     }
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        waste.paintIcon(this, g, (int)image_corner.getX(), (int)image_corner.getY());
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g); // Clear and prep panel for painting
+        // Draw the image at its current position
+        waste.paintIcon(this, g, (int) image_corner.getX(), (int) image_corner.getY());
     }
 
-    private class ClickListener extends MouseAdapter{
-
-        public void mousePressed(MouseEvent evt){
-            previousPoint = evt.getPoint();
+    private class ClickListener extends MouseAdapter {
+        public void mousePressed(MouseEvent evt) {
+            previousPoint = evt.getPoint(); // Save where the mouse was clicked
         }
     }
 
-    private class DragListener extends MouseMotionAdapter{
+    private class DragListener extends MouseMotionAdapter {
+        public void mouseDragged(MouseEvent evt) {
+            Point currentPoint = evt.getPoint(); // Get mouse's new position
 
-        public void mouseDragged(MouseEvent evt){
+            // Move image by difference between current and previous positions
+            image_corner.translate(
+                    (int)(currentPoint.getX() - previousPoint.getX()),
+                    (int)(currentPoint.getY() - previousPoint.getY())
+            );
 
-            Point currentPoint = evt.getPoint();  //update the current point of waste
-
-            image_corner.translate((int)(currentPoint.getX() - previousPoint.getX()), //changes the position of the waste when its dragged
-                    (int)(currentPoint.getY() - previousPoint.getY()));
-
-            previousPoint = currentPoint;
-            repaint();
+            previousPoint = currentPoint; // Update for next drag
+            repaint(); // Redraw panel with image in new position
         }
     }
 

@@ -13,15 +13,16 @@ public class ActionHandler implements ActionListener {
 
    // @Override
     public void actionPerformed(ActionEvent e) {
-        String action = e.getActionCommand();
+        String action = e.getActionCommand(); // Get the action command (button name or identifier)
 
         switch(action) {
             case "startScreen":
-                gm.sceneSwap.startScreen();
+                gm.sceneSwap.startScreen(); // Switch to the start screen
                 break;
-            case "levelScreen": // level screen
-                gm.sceneSwap.levelScreen();
+
+            case "levelScreen":
+                gm.sceneSwap.levelScreen(); // Switch to the level selection screen
                 break;
         }
+        }
     }
-}
