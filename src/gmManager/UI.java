@@ -9,11 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.net.URL;
+import javax.swing.*;
 import javax.swing.JButton;
 
 public class UI {
     gmManager game;                 // Make a gmManager object to be able to access fields in Actionhandler and Scenechanger
-    JFrame window;                  // title bar, close/minimize/maximize buttons, and borders
+    public JFrame window;                  // title bar, close/minimize/maximize buttons, and borders
 
     public JPanel bgPanel[] = new JPanel[10];  // Background Jpanel is a container that can hold buttons
     public JLabel bgLabel[] = new JLabel[10];  // Background Jlabel only displays individual text or images
@@ -27,13 +28,14 @@ public class UI {
         window.setVisible(true);               // Set window to be true when UI object is made (in gmManager)
     }
 
-    public void createMainField() { //
-        window = new JFrame();                                  // defining window
-        window.setSize(1112, 624);                 // set size of window
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close operation makes the exit button end the program
-        window.getContentPane().setBackground(Color.white);    // sets background to white
-        window.setLayout(null);                                // Layout is set to null, may change later to gridbaglayout for resizing
+    public void createMainField() {
+        window = new JFrame();
+        window.setSize(1112, 624);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLayout(null); // We'll add a JLayeredPane here
+
     }
+
     public void startScreen() {                                                                             // Creates background and button for start screen
         createBackground(0, "images/background.png");                                            // set background image stores it into index 0 of the Jpanel array
         createStartButton(0, 440, 140, 250, 100, "start.png");       // set start button, sends in index,location, size, and tag of button
@@ -41,7 +43,7 @@ public class UI {
 
     }
 
-    //This method creates a background panel with an image, stores it in arrays, and adds it to the main window at the given index.
+    // This method creates a background panel with an image, stores it in arrays, and adds it to the main window at the given index.
     public void createBackground(int num, String name) {
         bgPanel[num] = new JPanel();                                               // creates a new Jpanel object in background panel array for the index that has been passed in.
         bgPanel[num].setBounds(0, 0, 1920, 1080);               // set default bounds for this image
@@ -51,10 +53,10 @@ public class UI {
         bgLabel[num] = new JLabel();                                              // create new JLabel(Image) type add it to array that holds all images
         bgLabel[num].setBounds(0, 0, 1112, 624);                // sets bounds for this image
 
-        //get class tells us the class that we are currently in, class loader knows where all your files and resources are, getResource finds the specific file you are looking for
+        //getClass tells us the class that we are currently in, classLoader knows where all your files and resources are, getResource finds the specific file you are looking for
         ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(name));      // uses parameter to load image into a icon variable
         bgLabel[num].setIcon(icon);                                                         // Add the image to the passed in index label (image array)
-        bgPanel[num].add(bgLabel[num]);                                                     // Add the label to the passed index panel (Collection of labels)
+        bgPanel[num].add(bgLabel[num]);         // Add the label to the passed index panel (Collection of labels)
 
     }
 
@@ -100,9 +102,17 @@ public class UI {
     }
 
     public void createLevelSelect(int levelScreen) {
+
+        bgLabel[levelScreen] = new JLabel(); // Create background label
+        bgLabel[levelScreen].setBounds(0, 0, 1112, 624); // Set background size and position
+        ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
+        bgLabel[levelScreen].setIcon(newBgIcon); // Set background image
+        bgPanel[levelScreen].add(bgLabel[levelScreen]); // Add background to the panel
+        window.add(bgPanel[levelScreen]);
+
         // Add five buttons for levels
         for (int i = 0; i < 5; i++) {
-            JLabel levelButton = new JLabel(); // Create a new label to act as a level button (5 times bc its in the if statement)
+            JLabel levelButton = new JLabel("Level 1"); // Create a new label to act as a level button (5 times bc its in the if statement)
 
             // Set the position of each button; alternate rows based on even or odd index
             if (i % 2 == 0) {
@@ -123,9 +133,9 @@ public class UI {
             levelButton.addMouseListener(new MouseListener() {
                 public void mousePressed(MouseEvent e) {
                     if (SwingUtilities.isLeftMouseButton(e)) {
+                        bgPanel[levelScreen].setVisible(false); // Hide the current screen (level selection screen)
                         createLevelButton("images/firstlevelscreen.png", levelScreen);        // create level button functionalities
-
-                        // wastePanel
+                        //bgPanel[levelScreen + 1].setVisible(true); // make sure that panel is actually being shown!
                     }
                 }
 
@@ -136,41 +146,38 @@ public class UI {
             });
 
             bgPanel[levelScreen].add(levelButton);
+            bgPanel[levelScreen].setComponentZOrder(levelButton, 0);
+
 
         }
 
-        // Add background last so the level buttons appear on top
-        bgLabel[levelScreen] = new JLabel(); // Create background label
-        bgLabel[levelScreen].setBounds(0, 0, 1112, 624); // Set background size and position
-        ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
-        bgLabel[levelScreen].setIcon(newBgIcon); // Set background image
-        bgPanel[levelScreen].add(bgLabel[levelScreen]); // Add background to the panel
-
-        // Make the panel visible and add it to the main window
-        bgPanel[levelScreen].setVisible(true); // Show panel
-        window.add(bgPanel[levelScreen]); // Add panel to window
 
     }
 
-    public void createLevelButton(String name, int newScreenNum) {              // level button selector
-        int levelScreenNum = newScreenNum + 1; // Define the new screen number (used for transitioning to the next screen)
-        bgPanel[newScreenNum].setVisible(false); // Hide the current screen (level selection screen)
+
+    public void createLevelButton(String name, int newScreenNum) {
+        int levelScreenNum = newScreenNum + 1;
 
         if (bgPanel[levelScreenNum] == null) {
-            createBackground(levelScreenNum, name); // Create the background panel with the given image name
-            bgPanel[levelScreenNum].setLayout(null); // Set layout to null for manual component positioning (change later? for resizing)
+            bgPanel[levelScreenNum] = new JPanel(null);
+            bgPanel[levelScreenNum].setBounds(0, 0, 1112, 624);
+            window.add(bgPanel[levelScreenNum]);
         }
 
-        bgPanel[levelScreenNum].removeAll(); // Clear any existing components from the panel before adding new ones
+        bgPanel[levelScreenNum].removeAll();
 
-        bgLabel[levelScreenNum] = new JLabel(); // Create a new JLabel to hold the background image
-        bgLabel[levelScreenNum].setBounds(0, 0, 1112, 624); // Set size and position of the background
-        ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource(name)); // Load the background image
-        bgLabel[levelScreenNum].setIcon(levelBgIcon); // Set the loaded image as the icon
-        bgPanel[levelScreenNum].add(bgLabel[levelScreenNum]); // Add the background label to the panel
+        // Add draggable object FIRST
+        game.waste.imgLaunch(levelScreenNum); // waste added here
 
-        bgPanel[levelScreenNum].setVisible(true); // Make the new screen visible
-        window.add(bgPanel[levelScreenNum]); // Add it to the window
+        // THEN add background LAST
+        bgLabel[levelScreenNum] = new JLabel();
+        bgLabel[levelScreenNum].setBounds(0, 0, 1112, 624);
+        ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource(name));
+        bgLabel[levelScreenNum].setIcon(levelBgIcon);
+        bgPanel[levelScreenNum].add(bgLabel[levelScreenNum]);
+
+        // Move background to the back, draggable object to front
+
+        bgPanel[levelScreenNum].setVisible(true);
     }
-
 }
