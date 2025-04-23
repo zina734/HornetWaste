@@ -2,6 +2,7 @@ package gmManager;
 
 public class gmManager {
 
+    public dropZone drop;
     public ActionHandler handler;        // actionhandler
     public wastePanel waste;
     public UI ui;
@@ -11,6 +12,7 @@ public class gmManager {
     public gmManager() {
 
 
+        drop = new dropZone(this);
         waste = new wastePanel(this);
         ui = new UI(this);
         handler = new ActionHandler(this);

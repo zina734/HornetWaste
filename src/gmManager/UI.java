@@ -72,9 +72,7 @@ public class UI {
 
             public void mousePressed(MouseEvent e) {                   // This method is called when the mouse button is pressed down
                 if (SwingUtilities.isLeftMouseButton(e)) {             // Check if the LEFT mouse button was used for this press
-
                     bgPanel[num].setVisible(false);                    // Turns off the start screen (Hides old panel)
-
                     int newScreenNum = num + 1;                        // New index for a new panel (level screen)
 
                     if (bgPanel[newScreenNum] == null) {               // Make sure the panel is empty
@@ -102,7 +100,6 @@ public class UI {
     }
 
     public void createLevelSelect(int levelScreen) {
-
         bgLabel[levelScreen] = new JLabel(); // Create background label
         bgLabel[levelScreen].setBounds(0, 0, 1112, 624); // Set background size and position
         ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
@@ -135,7 +132,6 @@ public class UI {
                     if (SwingUtilities.isLeftMouseButton(e)) {
                         bgPanel[levelScreen].setVisible(false); // Hide the current screen (level selection screen)
                         createLevelButton("images/firstlevelscreen.png", levelScreen);        // create level button functionalities
-                        //bgPanel[levelScreen + 1].setVisible(true); // make sure that panel is actually being shown!
                     }
                 }
 
