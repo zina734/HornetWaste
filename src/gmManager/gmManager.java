@@ -3,10 +3,8 @@ package gmManager;
 public class gmManager {
 
     public dropZone drop;
-    public ActionHandler handler;        // actionhandler
     public wastePanel waste;
     public UI ui;
-    public SceneChanger sceneSwap;
 
 
     public gmManager() {
@@ -15,8 +13,6 @@ public class gmManager {
         drop = new dropZone(this);
         waste = new wastePanel(this);
         ui = new UI(this);
-        handler = new ActionHandler(this);
-        sceneSwap = new SceneChanger(this);
 
     }
 
