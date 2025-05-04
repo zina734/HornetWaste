@@ -140,7 +140,9 @@ public class UI {
         ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
         bgLabel[levelScreen].setIcon(newBgIcon); // Set background image
         bgPanel[levelScreen].add(bgLabel[levelScreen]); // Add background to the panel
+        game.resizer.registerOriginalBounds(bgLabel[levelScreen]);
         window.add(bgPanel[levelScreen]);
+
 
         // Add five buttons for levels
         for (int i = 0; i < 5; i++) {

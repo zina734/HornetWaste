@@ -27,9 +27,6 @@ public class wastePanel extends JPanel {
         if (waste != null && waste.getParent() != null) {
             waste.getParent().remove(waste);
          }
-
-
-
         waste = new JLabel();
         int imgW = icon.getIconWidth();
         int imgH = icon.getIconHeight();
