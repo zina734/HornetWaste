@@ -70,7 +70,7 @@ public class UI {
 
     public void startScreen() {                                                                             // Creates background and button for start screen
         createBackground(0, "images/background.png");                                            // set background image stores it into index 0 of the Jpanel array
-        createStartButton(0, 440, 140, 250, 100, "start.png");       // set start button, sends in index,location, size, and tag of button
+        createStartButton(0, 800, 405, 250, 100, "start.png");       // set start button, sends in index,location, size, and tag of button
         bgPanel[0].add(bgLabel[0]);                                                                         // Initialized a null label into the background panel array
 
     }
@@ -97,7 +97,6 @@ public class UI {
     public void createStartButton(int num, int objx, int objy, int objWidth, int objHeight, String objFile) {
         JLabel button = new JLabel();                                   // make new label called button for start button
         button.setBounds(objx, objy, objWidth, objHeight);              // sets bounds and size of the label called button
-
 
         ImageIcon objIcon = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));   // sends in image saves to objIcon
         button.setIcon(objIcon);                                                                                 // sets the label to image in objIcon
@@ -146,29 +145,31 @@ public class UI {
 
         // Add five buttons for levels
         for (int i = 0; i < 5; i++) {
-            JLabel levelButton = new JLabel("Level 1"); // Create a new label to act as a level button (5 times bc its in the if statement)
+            JLabel levelButton = new JLabel(); // Create a new label to act as a level button (5 times bc its in the if statement)
 
-            // Set the position of each button; alternate rows based on even or odd index
-            if (i % 2 == 0) {
-                levelButton.setBounds(200 + (i * 150), 60, 200, 75); // Top row positioning
+            // Set the position of each button; first display top row of buttons, then display bottom row
+            if (i < 3) {
+                levelButton.setBounds(600 + (i * 300), 110, 200, 75); // Top row positioning
             } else {
-                levelButton.setBounds(150 + (i * 150), 170, 200, 75); // Bottom row positioning
+                levelButton.setBounds(450 + ((i - 2) * 300), 260,200, 75); // Bottom row positioning
             }
 
             // Load the button image icon (5 times bc its in the if statement)
-            URL objURL = getClass().getClassLoader().getResource("images/start.png");
+            URL objURL = getClass().getClassLoader().getResource("levels/lvl" + (i + 1) + ".png");
             if (objURL != null) {
                 levelButton.setIcon(new ImageIcon(objURL)); // Set icon if image is found
             } else {
-                System.out.println("Image not found: start.png");
+                System.out.println("Image not found: lvl" + (i + 1) + ".png");
             }
 
             // Make each level button go to the firstlevelscreen
+            int finalLevelScreen = levelScreen;
+            int finalI = i + 1;
             levelButton.addMouseListener(new MouseListener() {
                 public void mousePressed(MouseEvent e) {
                     if (SwingUtilities.isLeftMouseButton(e)) {
-                        bgPanel[levelScreen].setVisible(false); // Hide the current screen (level selection screen)
-                        createLevelButton("images/firstlevelscreen.png", levelScreen);        // create level button functionalities
+                        bgPanel[finalLevelScreen].setVisible(false); // Hide the current screen (level selection screen)
+                        createLevelButton("levelscreen/levelscreen" + finalI + ".png", finalLevelScreen);        // create level button functionalities
                     }
                 }
 
