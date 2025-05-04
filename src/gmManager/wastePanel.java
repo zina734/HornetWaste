@@ -31,7 +31,7 @@ public class wastePanel extends JPanel {
         int imgW = icon.getIconWidth();
         int imgH = icon.getIconHeight();
 
-        waste.setBounds(450, 175, imgW, imgH);
+        waste.setBounds(810, 175, imgW, imgH);
         waste.setIcon(icon);
         gm.ui.bgPanel[lvlScreen].add(waste);
         gm.resizer.registerOriginalBounds(waste);
@@ -41,6 +41,7 @@ public class wastePanel extends JPanel {
         JLabel landfill = gm.drop.landfill(lvlScreen);
         JLabel drop1 = gm.drop.drop1(lvlScreen);
         JLabel drop2 = gm.drop.drop2(lvlScreen);
+        JLabel drop3 = gm.drop.drop3(lvlScreen);
 
         waste.revalidate();
         waste.repaint();
@@ -89,6 +90,7 @@ public class wastePanel extends JPanel {
                 gm.drop.createZone(landfill, 2);
                 gm.drop.createZone(drop1, 3);
                 gm.drop.createZone(drop2, 4);
+                gm.drop.createZone(drop3, 5);
             }
 
         });
