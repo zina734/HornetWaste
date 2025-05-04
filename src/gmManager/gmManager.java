@@ -5,11 +5,11 @@ public class gmManager {
     public dropZone drop;
     public wastePanel waste;
     public UI ui;
-
+    public resizer resizer;
 
     public gmManager() {
 
-
+        resizer = new resizer(this);
         drop = new dropZone(this);
         waste = new wastePanel(this);
         ui = new UI(this);

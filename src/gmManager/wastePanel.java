@@ -5,12 +5,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
 import java.awt.Color;
+import java.awt.Component;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.BorderFactory;
+import javax.swing.*;
 
 public class wastePanel extends JPanel {
 
@@ -40,6 +37,7 @@ public class wastePanel extends JPanel {
         waste.setBounds(450, 175, imgW, imgH);
         waste.setIcon(icon);
         gm.ui.bgPanel[lvlScreen].add(waste);
+        gm.resizer.registerOriginalBounds(waste);
 
         JLabel compost = gm.drop.compost(lvlScreen);
         JLabel recycle = gm.drop.recycle(lvlScreen);
@@ -62,11 +60,24 @@ public class wastePanel extends JPanel {
 
         waste.addMouseMotionListener(new MouseMotionAdapter() {         // enables dragging and dropping functionality
             public void mouseDragged(MouseEvent e) {
-                int posX = waste.getLocation().x;
-                int posY = waste.getLocation().y;
+                JComponent parent = (JComponent)waste.getParent();
+
+                int posX = waste.getX();
+                int posY = waste.getY();
                 int moveX = e.getX() - initialClick.x;
                 int moveY = e.getY() - initialClick.y;
-                waste.setLocation(posX + moveX, posY + moveY);
+
+                int newX = posX + moveX;
+                int newY = posY + moveY;
+
+                int pWidth = parent.getWidth();
+                int pHeight = parent.getHeight();
+
+                newX = Math.max(0, Math.min(newX, pWidth - waste.getWidth()));
+                newY = Math.max(0, Math.min(newY, pHeight - waste.getHeight()));
+
+                waste.setLocation(newX, newY);
+
             }
         });
 

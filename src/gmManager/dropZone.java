@@ -34,6 +34,7 @@ public class dropZone extends JPanel {
         dropZone1.setBounds(150, 350, 100, 200);         // location for area object should be dropped to
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         gm.ui.bgPanel[panel].add(dropZone1);
+        gm.resizer.registerOriginalBounds(dropZone1);                  // <--- Add this line
         return dropZone1;
 
     }
@@ -43,6 +44,7 @@ public class dropZone extends JPanel {
         dropZone1.setBounds(300, 350, 100, 200);         // location for area object should be dropped to
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         gm.ui.bgPanel[panel].add(dropZone1);
+        gm.resizer.registerOriginalBounds(dropZone1);                  // <--- Add this line
         return dropZone1;
 
     }
@@ -52,24 +54,27 @@ public class dropZone extends JPanel {
         dropZone1.setBounds(450, 350, 100, 200);         // location for area object should be dropped to
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         gm.ui.bgPanel[panel].add(dropZone1);
+        gm.resizer.registerOriginalBounds(dropZone1);                  // <--- Add this line
         return dropZone1;
 
     }
 
-    public JLabel drop1(int panel) {
+    public JLabel drop1(int panel) {                // ppm surplus
         JLabel dropZone1 = new JLabel();
         dropZone1.setBounds(600, 350, 100, 200);         // location for area object should be dropped to
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         gm.ui.bgPanel[panel].add(dropZone1);
+        gm.resizer.registerOriginalBounds(dropZone1);                  // <--- Add this line
         return dropZone1;
 
     }
 
-    public JLabel drop2(int panel) {
+    public JLabel drop2(int panel) {                // the 5th one
         JLabel dropZone1 = new JLabel();
         dropZone1.setBounds(750, 350, 100, 200);         // location for area object should be dropped to
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         gm.ui.bgPanel[panel].add(dropZone1);
+        gm.resizer.registerOriginalBounds(dropZone1);                  // <--- Add this line
         return dropZone1;
     }
 

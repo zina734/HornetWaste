@@ -1,16 +1,19 @@
 package gmManager;
 
-import java.awt.Color;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.net.URL;
-import javax.swing.*;
-import javax.swing.JButton;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.awt.*;
 
 public class UI {
     gmManager game;                 // Make a gmManager object to be able to access fields in Actionhandler and Scenechanger
@@ -24,15 +27,44 @@ public class UI {
 
         createMainField();                     // Sets basic window functions
         startScreen();                         // Outputs completed screens
+        // Resize the background panel dynamically
 
         window.setVisible(true);               // Set window to be true when UI object is made (in gmManager)
     }
 
     public void createMainField() {
         window = new JFrame();
-        window.setSize(1112, 624);
+        window.setSize(1920, 1080);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(null); // We'll add a JLayeredPane here
+        final Timer[] resizeTimer = {new Timer()};
+        window.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                game.resizer.setFastResizeMode(true); // fast/low-quality resize
+
+                resizeTimer[0].cancel();  // Cancel any pending task
+                resizeTimer[0] = new Timer();
+                resizeTimer[0].schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        SwingUtilities.invokeLater(() -> {
+                            Dimension newSize = window.getSize();
+                            game.resizer.setFastResizeMode(false); // smooth/high-quality resize
+                            game.resizer.resizeAll(newSize.width, newSize.height);
+                        });
+                    }
+                }, 100); // Wait 300ms after resizing stops
+            }
+        });
+
+       /* window.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Dimension newSize = window.getSize();
+                game.resizer.resizeAll(newSize.width, newSize.height);
+            }
+        }); */
 
     }
 
@@ -51,12 +83,14 @@ public class UI {
         window.add(bgPanel[num]);                                                 // Adds the finished panel to the main JFrame window
 
         bgLabel[num] = new JLabel();                                              // create new JLabel(Image) type add it to array that holds all images
-        bgLabel[num].setBounds(0, 0, 1112, 624);                // sets bounds for this image
+        bgLabel[num].setBounds(0, 0, 1920, 1080);                // sets bounds for this image
 
         //getClass tells us the class that we are currently in, classLoader knows where all your files and resources are, getResource finds the specific file you are looking for
         ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(name));      // uses parameter to load image into a icon variable
         bgLabel[num].setIcon(icon);                                                         // Add the image to the passed in index label (image array)
         bgPanel[num].add(bgLabel[num]);         // Add the label to the passed index panel (Collection of labels)
+        game.resizer.registerOriginalBounds(bgLabel[num]);
+        bgPanel[num].setComponentZOrder(bgLabel[num], bgPanel[num].getComponentCount() - 1);
 
     }
 
@@ -64,9 +98,9 @@ public class UI {
         JLabel button = new JLabel();                                   // make new label called button for start button
         button.setBounds(objx, objy, objWidth, objHeight);              // sets bounds and size of the label called button
 
+
         ImageIcon objIcon = new ImageIcon(getClass().getClassLoader().getResource("images/" + objFile));   // sends in image saves to objIcon
         button.setIcon(objIcon);                                                                                 // sets the label to image in objIcon
-
 
         button.addMouseListener(new MouseListener() {                  // Attach a mouse listener to the button
 
@@ -96,12 +130,13 @@ public class UI {
         });
 
         bgPanel[num].add(button);                                      // After adding the mouse listener, add the button to the original panel
+        game.resizer.registerOriginalBounds(button);
         bgPanel[num].add(bgLabel[num]);                                //
     }
 
     public void createLevelSelect(int levelScreen) {
         bgLabel[levelScreen] = new JLabel(); // Create background label
-        bgLabel[levelScreen].setBounds(0, 0, 1112, 624); // Set background size and position
+        bgLabel[levelScreen].setBounds(0, 0, 1920, 1080); // Set background size and position
         ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
         bgLabel[levelScreen].setIcon(newBgIcon); // Set background image
         bgPanel[levelScreen].add(bgLabel[levelScreen]); // Add background to the panel
@@ -142,6 +177,7 @@ public class UI {
             });
 
             bgPanel[levelScreen].add(levelButton);
+            game.resizer.registerOriginalBounds(levelButton);
             bgPanel[levelScreen].setComponentZOrder(levelButton, 0);
 
 
@@ -156,7 +192,7 @@ public class UI {
 
         if (bgPanel[levelScreenNum] == null) {
             bgPanel[levelScreenNum] = new JPanel(null);
-            bgPanel[levelScreenNum].setBounds(0, 0, 1112, 624);
+            bgPanel[levelScreenNum].setBounds(0, 0, 1920, 1080);
             window.add(bgPanel[levelScreenNum]);
         }
 
@@ -167,10 +203,11 @@ public class UI {
 
         // THEN add background LAST
         bgLabel[levelScreenNum] = new JLabel();
-        bgLabel[levelScreenNum].setBounds(0, 0, 1112, 624);
+        bgLabel[levelScreenNum].setBounds(0, 0, 1920, 1080);
         ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource(name));
         bgLabel[levelScreenNum].setIcon(levelBgIcon);
         bgPanel[levelScreenNum].add(bgLabel[levelScreenNum]);
+        game.resizer.registerOriginalBounds(bgLabel[levelScreenNum]);
 
         // Move background to the back, draggable object to front
 
