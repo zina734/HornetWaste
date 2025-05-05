@@ -17,25 +17,6 @@ import java.util.HashMap;
 
 public class dropZone extends JPanel {
 
-
-    public final String[] approvedItems[] = {
-            {"images/waste/waste1.png"},
-            {"images/waste/waste2.png"},
-            {"images/waste/waste3.png"},
-            {"images/waste/waste4.png"},
-            {"images/waste/waste5.png"},
-            {"images/waste/waste6.png"}
-    };
-
-    /* public final String[] landfillItems[] = {
-            {"images/waste/waste1.png"},
-            {"images/waste/waste2.png"},
-            {"images/waste/waste3.png"},
-            {"images/waste/waste4.png"},
-            {"images/waste/waste5.png"},
-            {"images/waste/waste6.png"}
-    }; */
-
     gmManager gm;
 
     public dropZone(gmManager gm) {
