@@ -4,13 +4,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
+import java.util.HashMap;
 import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.*;
 
 public class wastePanel extends JPanel {
-
 
     ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste1.png")); // Load image from file
     public JLabel waste;
@@ -85,6 +85,7 @@ public class wastePanel extends JPanel {
             // create class or method that has the logic of the mouseReleased() method
             // call that method 5 times to get 5 zones
             public void mouseReleased(MouseEvent e) {
+
                 gm.drop.createZone(compost, 0);
                 gm.drop.createZone(recycle, 1);
                 gm.drop.createZone(landfill, 2);

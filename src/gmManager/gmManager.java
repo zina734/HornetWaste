@@ -6,9 +6,11 @@ public class gmManager {
     public wastePanel waste;
     public UI ui;
     public resizer resizer;
+    public wasteItems items;
 
     public gmManager() {
 
+        items = new wasteItems(this);
         resizer = new resizer(this);
         drop = new dropZone(this);
         waste = new wastePanel(this);

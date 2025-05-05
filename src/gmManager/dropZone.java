@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 
+import java.util.HashMap;
+
 public class dropZone extends JPanel {
 
 
@@ -24,6 +26,15 @@ public class dropZone extends JPanel {
             {"images/waste/waste5.png"},
             {"images/waste/waste6.png"}
     };
+
+    /* public final String[] landfillItems[] = {
+            {"images/waste/waste1.png"},
+            {"images/waste/waste2.png"},
+            {"images/waste/waste3.png"},
+            {"images/waste/waste4.png"},
+            {"images/waste/waste5.png"},
+            {"images/waste/waste6.png"}
+    }; */
 
     gmManager gm;
 
@@ -98,19 +109,46 @@ public class dropZone extends JPanel {
         int zoneW = bin.getWidth();
         int zoneH = bin.getHeight();
 
+        switch (list) {
+            case 0:
+                gm.items.loadCMP();            // each load item method will load every correct answer for that bin into the hashmap
+                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.cmp);
+                break;
+            case 1:
+                gm.items.loadRCY();
+                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.rcy);
+                break;
+            case 2:
+                gm.items.loadLND();
+                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.lnd);
+                break;
+            case 3:
+                gm.items.loadEWS();
+                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.ews);
+                break;
+            case 4:
+                gm.items.loadHRR();
+                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.hrr);
+                break;
+            case 5:
+                gm.items.loadHRS();
+                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.hrs);
+                break;
+        }
+
+    }
+
+    public void zoneBounds(int wasteX, int wasteY, int binX, int binY, int binW, int binH, HashMap<String, String> items) {
         Random random = new Random();
         int nextItem = random.nextInt(6);
 
-        if (wasteX + 50 > zoneX && wasteX < zoneX + zoneW && wasteY + 50 > zoneY && wasteY < zoneY + zoneH) {
-            String filename = gm.waste.icon.toString();
-            boolean approved = false;
 
-            for (String item : approvedItems[list]) {
-                if (filename.contains(item)) {
-                    approved = true;
-                    break;
-                }
-            }
+        if (wasteX + 50 > binX && wasteX < binX + binW && wasteY + 50 > binY && wasteY < binY + binH) {
+            String filePath = gm.waste.icon.toString();
+            String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+            System.out.println(fileName + "\n" + items.keySet().toString());
+
+            boolean approved = items.keySet().toString().contains(fileName);
 
             if (approved) {
                 gm.waste.waste.setVisible(false);
