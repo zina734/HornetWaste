@@ -3,6 +3,15 @@ package gmManager;
 import java.util.HashMap;
 
 public class wasteItems {
+    HashMap<String, String> icons = new HashMap<>() {{
+        put("waste1.png", "bananer");
+        put("waste2.png", "monther drink");
+        put("waste3.png", "sus paper");
+        put("waste4.png", "red solo cup");
+        put("waste5.png", "touch grass");
+        put("waste6.png", "cardboard bawx");
+    }};
+
     HashMap<String, String> cmp = new HashMap<>();
     HashMap<String, String> rcy = new HashMap<>();
     HashMap<String, String> lnd = new HashMap<>();
@@ -32,7 +41,7 @@ public class wasteItems {
     }
 
     public void loadEWS() {
-        ews.put("waste4.png", "red solo cup");;
+        ews.put("waste4.png", "red solo cup");
 
     }
 

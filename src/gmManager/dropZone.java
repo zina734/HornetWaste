@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class dropZone extends JPanel {
 
     gmManager gm;
+    static int x = 0; // used to make sure labels are correct
 
     public dropZone(gmManager gm) {
         this.gm = gm;
@@ -119,27 +120,58 @@ public class dropZone extends JPanel {
 
     }
 
+    public void createTitle(String name, int lvl) {
+            if (gm.waste.wasteTitle == null) {
+                gm.waste.wasteTitle = new JLabel(name);
+                gm.waste.wasteTitle.setForeground(Color.RED);
+                gm.waste.wasteTitle.setBounds(810, 100, 200, 20);
+                gm.ui.bgPanel[lvl].add(gm.waste.wasteTitle);
+            } else {
+                gm.waste.wasteTitle.setText(name);
+            }
+    }
+
     public void zoneBounds(int wasteX, int wasteY, int binX, int binY, int binW, int binH, HashMap<String, String> items) {
         Random random = new Random();
         int nextItem = random.nextInt(6);
 
 
+
         if (wasteX + 50 > binX && wasteX < binX + binW && wasteY + 50 > binY && wasteY < binY + binH) {
+
             String filePath = gm.waste.icon.toString();
             String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+            String nextTitle = gm.items.icons.get(fileName);
             System.out.println(fileName + "\n" + items.keySet().toString());
 
             boolean approved = items.keySet().toString().contains(fileName);
 
             if (approved) {
+                gm.waste.wasteTitle.setVisible(false);
                 gm.waste.waste.setVisible(false);
                 JOptionPane.showMessageDialog(null, "Good job monkey u did it");
+
+                //JLabel name = new JLabel(nextTitle);
+                //name.setLocation(810, 100);
+
                 // load another item here
+
+
+                // String title = "waste" + (nextItem + 1) + ".png";
 
                 gm.waste.icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste" + (nextItem + 1) + ".png"));
                 gm.waste.waste.setIcon(gm.waste.icon);
                 gm.waste.waste.setLocation(810, 175);
                 gm.waste.waste.setVisible(true);
+
+                createTitle(gm.items.icons.get("waste" + (nextItem + 1) + ".png"), gm.ui.level);
+                gm.waste.wasteTitle.setVisible(true);
+
+                gm.waste.waste.revalidate();
+                gm.waste.waste.repaint();
+
+                //gm.waste.wasteTitle.revalidate();
+                //gm.waste.wasteTitle.repaint();
 
             } else {
                 gm.waste.waste.setLocation(810, 175);

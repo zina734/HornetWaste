@@ -14,6 +14,7 @@ public class wastePanel extends JPanel {
 
     ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste1.png")); // Load image from file
     public JLabel waste;
+    public JLabel wasteTitle;
     public Point initialClick;
 
     gmManager gm;           // important
@@ -28,12 +29,22 @@ public class wastePanel extends JPanel {
             waste.getParent().remove(waste);
          }
         waste = new JLabel();
+
         int imgW = icon.getIconWidth();
         int imgH = icon.getIconHeight();
+        String wasteName = icon.toString();
+        String name = wasteName.substring(wasteName.lastIndexOf('/') + 1);
+        String key = gm.items.icons.get(name);
+
+
+        gm.drop.createTitle(key, lvlScreen);
+        wasteTitle.setBounds(810, 100, imgW, imgH);
+        gm.ui.bgPanel[lvlScreen].add(wasteTitle);
 
         waste.setBounds(810, 175, imgW, imgH);
         waste.setIcon(icon);
         gm.ui.bgPanel[lvlScreen].add(waste);
+
         gm.resizer.registerOriginalBounds(waste);
 
         JLabel compost = gm.drop.compost(lvlScreen);
@@ -45,6 +56,9 @@ public class wastePanel extends JPanel {
 
         waste.revalidate();
         waste.repaint();
+
+        //wasteTitle.revalidate();;
+        //wasteTitle.repaint();
 
         waste.addMouseListener(new MouseAdapter() {         // enables you to click on the object
             public void mousePressed(MouseEvent e) {

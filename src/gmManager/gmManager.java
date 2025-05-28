@@ -12,8 +12,8 @@ public class gmManager {
 
         items = new wasteItems(this);
         resizer = new resizer(this);
-        drop = new dropZone(this);
         waste = new wastePanel(this);
+        drop = new dropZone(this);
         ui = new UI(this);
 
     }

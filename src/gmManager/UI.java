@@ -22,6 +22,8 @@ public class UI {
     public JPanel bgPanel[] = new JPanel[10];  // Background Jpanel is a container that can hold buttons
     public JLabel bgLabel[] = new JLabel[10];  // Background Jlabel only displays individual text or images
 
+    public int level = 0;
+
     public UI(gmManager game) {                // UI constructor
         this.game = game;                      // define game
 
@@ -106,19 +108,20 @@ public class UI {
             public void mousePressed(MouseEvent e) {                   // This method is called when the mouse button is pressed down
                 if (SwingUtilities.isLeftMouseButton(e)) {             // Check if the LEFT mouse button was used for this press
                     bgPanel[num].setVisible(false);                    // Turns off the start screen (Hides old panel)
-                    int newScreenNum = num + 1;                        // New index for a new panel (level screen)
+                    level = num + 1;                        // New index for a new panel (level screen)
 
-                    if (bgPanel[newScreenNum] == null) {               // Make sure the panel is empty
-                        createBackground(newScreenNum, "images/Levelscreen.png"); // Uses function to load the level screen into new index of background panels
-                        bgPanel[newScreenNum].setLayout(null);         // Set layout to null may turn it to gridbaglayout for resizing
+                    if (bgPanel[level] == null) {               // Make sure the panel is empty
+                        createBackground(level, "images/Levelscreen.png"); // Uses function to load the level screen into new index of background panels
+                        bgPanel[level].setLayout(null);         // Set layout to null may turn it to gridbaglayout for resizing
                     }
 
-                    bgPanel[newScreenNum].removeAll();                 // Clear the panel before adding new components
-                    createLevelSelect(newScreenNum);                   // Create level select screen
+                    bgPanel[level].removeAll();                 // Clear the panel before adding new components
+                    createLevelSelect();                   // Create level select screen
+                    // createLevelSelect(level);                   // Create level select screen
 
                     // Refresh UI
-                    bgPanel[newScreenNum].revalidate();                // Ensures the layout is recalculated using the correct panel using the specified index
-                    bgPanel[newScreenNum].repaint();                   // Redraws the panel to display updates using the correct panel specified bt the index
+                    bgPanel[level].revalidate();                // Ensures the layout is recalculated using the correct panel using the specified index
+                    bgPanel[level].repaint();                   // Redraws the panel to display updates using the correct panel specified bt the index
                 }
             }
 
@@ -133,14 +136,14 @@ public class UI {
         bgPanel[num].add(bgLabel[num]);                                //
     }
 
-    public void createLevelSelect(int levelScreen) {
-        bgLabel[levelScreen] = new JLabel(); // Create background label
-        bgLabel[levelScreen].setBounds(0, 0, 1920, 1080); // Set background size and position
+    public void createLevelSelect() {
+        bgLabel[level] = new JLabel(); // Create background label
+        bgLabel[level].setBounds(0, 0, 1920, 1080); // Set background size and position
         ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
-        bgLabel[levelScreen].setIcon(newBgIcon); // Set background image
-        bgPanel[levelScreen].add(bgLabel[levelScreen]); // Add background to the panel
-        game.resizer.registerOriginalBounds(bgLabel[levelScreen]);
-        window.add(bgPanel[levelScreen]);
+        bgLabel[level].setIcon(newBgIcon); // Set background image
+        bgPanel[level].add(bgLabel[level]); // Add background to the panel
+        game.resizer.registerOriginalBounds(bgLabel[level]);
+        window.add(bgPanel[level]);
 
 
         // Add five buttons for levels
@@ -163,13 +166,13 @@ public class UI {
             }
 
             // Make each level button go to the firstlevelscreen
-            int finalLevelScreen = levelScreen;
+            // int finalLevelScreen = level;
             int finalI = i + 1;
             levelButton.addMouseListener(new MouseListener() {
                 public void mousePressed(MouseEvent e) {
                     if (SwingUtilities.isLeftMouseButton(e)) {
-                        bgPanel[finalLevelScreen].setVisible(false); // Hide the current screen (level selection screen)
-                        createLevelButton("levelscreen/levelscreen" + finalI + ".png", finalLevelScreen);        // create level button functionalities
+                        bgPanel[level].setVisible(false); // Hide the current screen (level selection screen)
+                        createLevelButton("levelscreen/levelscreen" + finalI + ".png");        // create level button functionalities
                     }
                 }
 
@@ -179,9 +182,9 @@ public class UI {
                 public void mouseExited(MouseEvent e) {}
             });
 
-            bgPanel[levelScreen].add(levelButton);
+            bgPanel[level].add(levelButton);
             game.resizer.registerOriginalBounds(levelButton);
-            bgPanel[levelScreen].setComponentZOrder(levelButton, 0);
+            bgPanel[level].setComponentZOrder(levelButton, 0);
 
 
         }
@@ -190,30 +193,30 @@ public class UI {
     }
 
 
-    public void createLevelButton(String name, int newScreenNum) {
-        int levelScreenNum = newScreenNum + 1;
+    public void createLevelButton(String name) {
+        level = level + 1;
 
-        if (bgPanel[levelScreenNum] == null) {
-            bgPanel[levelScreenNum] = new JPanel(null);
-            bgPanel[levelScreenNum].setBounds(0, 0, 1920, 1080);
-            window.add(bgPanel[levelScreenNum]);
+        if (bgPanel[level] == null) {
+            bgPanel[level] = new JPanel(null);
+            bgPanel[level].setBounds(0, 0, 1920, 1080);
+            window.add(bgPanel[level]);
         }
 
-        bgPanel[levelScreenNum].removeAll();
+        bgPanel[level].removeAll();
 
         // Add draggable object FIRST
-        game.waste.imgLaunch(levelScreenNum); // waste added here
+        game.waste.imgLaunch(level); // waste added here
 
         // THEN add background LAST
-        bgLabel[levelScreenNum] = new JLabel();
-        bgLabel[levelScreenNum].setBounds(0, 0, 1920, 1080);
+        bgLabel[level] = new JLabel();
+        bgLabel[level].setBounds(0, 0, 1920, 1080);
         ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource(name));
-        bgLabel[levelScreenNum].setIcon(levelBgIcon);
-        bgPanel[levelScreenNum].add(bgLabel[levelScreenNum]);
-        game.resizer.registerOriginalBounds(bgLabel[levelScreenNum]);
+        bgLabel[level].setIcon(levelBgIcon);
+        bgPanel[level].add(bgLabel[level]);
+        game.resizer.registerOriginalBounds(bgLabel[level]);
 
         // Move background to the back, draggable object to front
 
-        bgPanel[levelScreenNum].setVisible(true);
+        bgPanel[level].setVisible(true);
     }
 }
