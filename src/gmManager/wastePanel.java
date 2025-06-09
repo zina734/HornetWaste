@@ -37,15 +37,25 @@ public class wastePanel extends JPanel {
         String key = gm.items.icons.get(name);
 
 
-        gm.drop.createTitle(key, lvlScreen);
+        gm.drop.createTitle(key, gm.ui.level);
         wasteTitle.setBounds(810, 100, imgW, imgH);
         gm.ui.bgPanel[lvlScreen].add(wasteTitle);
+        gm.resizer.registerOriginalBounds(wasteTitle);
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(wasteTitle, 0);
 
-        waste.setBounds(810, 175, imgW, imgH);
+       /* waste.setBounds(810, 175, imgW, imgH);
+        gm.resizer.registerOriginalBounds(waste);
         waste.setIcon(icon);
         gm.ui.bgPanel[lvlScreen].add(waste);
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(waste, 0); */
 
+        waste.setBounds(810, 175, imgW, imgH);
+        gm.ui.bgPanel[lvlScreen].add(waste);
         gm.resizer.registerOriginalBounds(waste);
+        waste.setIcon(icon);
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(waste, 0);
+
+      // gm.resizer.registerOriginalBounds(waste);
 
         JLabel compost = gm.drop.compost(lvlScreen);
         JLabel recycle = gm.drop.recycle(lvlScreen);
@@ -57,8 +67,8 @@ public class wastePanel extends JPanel {
         waste.revalidate();
         waste.repaint();
 
-        //wasteTitle.revalidate();;
-        //wasteTitle.repaint();
+        wasteTitle.revalidate();;
+        wasteTitle.repaint();
 
         waste.addMouseListener(new MouseAdapter() {         // enables you to click on the object
             public void mousePressed(MouseEvent e) {

@@ -39,34 +39,28 @@ public class UI {
         window.setSize(1920, 1080);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(null); // We'll add a JLayeredPane here
-        final Timer[] resizeTimer = {new Timer()};
+        game.resizer.origSizeWidth = window.getWidth();
+        game.resizer.origSizeHeight = window.getHeight();
+
+        javax.swing.Timer debounce = new javax.swing.Timer(100, e -> {
+            // this fires 100ms after the last resize event
+            game.resizer.setFastResizeMode(false);
+            Dimension d = window.getSize();
+            game.resizer.resizeAll(d.width, d.height);
+        });
+        debounce.setRepeats(false);
+
+        // 2) install exactly one ComponentListener
         window.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                game.resizer.setFastResizeMode(true); // fast/low-quality resize
-
-                resizeTimer[0].cancel();  // Cancel any pending task
-                resizeTimer[0] = new Timer();
-                resizeTimer[0].schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        SwingUtilities.invokeLater(() -> {
-                            Dimension newSize = window.getSize();
-                            game.resizer.setFastResizeMode(false); // smooth/high-quality resize
-                            game.resizer.resizeAll(newSize.width, newSize.height);
-                        });
-                    }
-                }, 100); // Wait 300ms after resizing stops
+                // immediately go into “fast” mode
+                game.resizer.setFastResizeMode(true);
+                // restart (or start) the debounce timer
+                debounce.restart();
             }
         });
 
-       /* window.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                Dimension newSize = window.getSize();
-                game.resizer.resizeAll(newSize.width, newSize.height);
-            }
-        }); */
 
     }
 
@@ -115,7 +109,12 @@ public class UI {
                         bgPanel[level].setLayout(null);         // Set layout to null may turn it to gridbaglayout for resizing
                     }
 
-                    bgPanel[level].removeAll();                 // Clear the panel before adding new components
+                    bgPanel[num].setVisible(false);      // hide current screen                     // update level tracker
+                    window.setComponentZOrder(bgPanel[level], 0);            // re-order components so proper panel is on top
+                    bgPanel[level].setVisible(true);
+
+                    //bgPanel[level].removeAll();                 // Clear the panel before adding new components
+
                     createLevelSelect();                   // Create level select screen
                     // createLevelSelect(level);                   // Create level select screen
 
@@ -144,6 +143,36 @@ public class UI {
         bgPanel[level].add(bgLabel[level]); // Add background to the panel
         game.resizer.registerOriginalBounds(bgLabel[level]);
         window.add(bgPanel[level]);
+
+        JLabel exitButton = new JLabel();
+        exitButton.setBounds(800, 600, 250, 100);
+
+        ImageIcon exitIcon = new ImageIcon(getClass().getClassLoader().getResource("images/exit.png"));
+        exitButton.setIcon(exitIcon);
+
+        exitButton.addMouseListener(new MouseListener() {
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    int oldLevel = level;         // level screen
+                    int newLevel = level - 1;     // level select screen
+
+                    bgPanel[oldLevel].setVisible(false);      // hide current screen
+                    level = newLevel;                         // update level tracker
+                    window.setComponentZOrder(bgPanel[newLevel], 0);            // re-order components so proper panel is on top
+                    bgPanel[newLevel].setVisible(true);               // display level select screen
+                }
+            }
+
+            public void mouseClicked(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {}
+        });
+
+        bgPanel[level].add(exitButton);
+        game.resizer.registerOriginalBounds(exitButton);
+        bgPanel[level].setComponentZOrder(exitButton, 0);
+
 
 
         // Add five buttons for levels
@@ -202,7 +231,7 @@ public class UI {
             window.add(bgPanel[level]);
         }
 
-        bgPanel[level].removeAll();
+        //bgPanel[level].removeAll();
 
         // Add draggable object FIRST
         game.waste.imgLaunch(level); // waste added here

@@ -7,8 +7,12 @@ import java.util.Map;
 
 public class resizer {
     gmManager gm;
+    int origSizeWidth;
+    int origSizeHeight;
     Map<JLabel, Rectangle> originalBounds = new HashMap<>();
     Map<JLabel, ImageIcon> originalIcons = new HashMap<>();
+
+
     private boolean fastResizeMode = true;
 
     public resizer(gmManager gm) {

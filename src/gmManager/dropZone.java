@@ -1,10 +1,10 @@
 package gmManager;
 
+import java.awt.*;
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Point;
-import java.awt.Color;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class dropZone extends JPanel {
 
     gmManager gm;
-    static int x = 0; // used to make sure labels are correct
+    int count;
 
     public dropZone(gmManager gm) {
         this.gm = gm;
@@ -141,38 +141,72 @@ public class dropZone extends JPanel {
 
             String filePath = gm.waste.icon.toString();
             String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-            String nextTitle = gm.items.icons.get(fileName);
             System.out.println(fileName + "\n" + items.keySet().toString());
 
             boolean approved = items.keySet().toString().contains(fileName);
+            boolean fastResize = true;
+
 
             if (approved) {
                 gm.waste.wasteTitle.setVisible(false);
                 gm.waste.waste.setVisible(false);
-                JOptionPane.showMessageDialog(null, "Good job monkey u did it");
 
-                //JLabel name = new JLabel(nextTitle);
-                //name.setLocation(810, 100);
+                count += 1;     // keeps track of correct answers
 
-                // load another item here
+                if(count > 2) {  // if you get the desired amount of questions right
+                    JOptionPane.showMessageDialog(null, "yay u won buddy yippie");
 
+                    int oldLevel = gm.ui.level;         // level screen
+                    int newLevel = gm.ui.level - 1;     // level select screen
 
-                // String title = "waste" + (nextItem + 1) + ".png";
+                    gm.ui.bgPanel[oldLevel].setVisible(false);      // hide current screen
+                    gm.ui.level = newLevel;                         // update level tracker
+                    gm.ui.window.setComponentZOrder(gm.ui.bgPanel[newLevel], 0);            // re-order components so proper panel is on top
+                    gm.ui.bgPanel[newLevel].setVisible(true);               // display level select screen
 
-                gm.waste.icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste" + (nextItem + 1) + ".png"));
-                gm.waste.waste.setIcon(gm.waste.icon);
-                gm.waste.waste.setLocation(810, 175);
-                gm.waste.waste.setVisible(true);
+                    gm.ui.bgPanel[oldLevel].add(gm.waste.wasteTitle);               // add the title to the current screen still
+                    gm.resizer.registerOriginalBounds(gm.waste.wasteTitle);             // register the bounds (for resizing purposes)
+                    gm.ui.bgPanel[oldLevel].setComponentZOrder(gm.waste.wasteTitle, 0);         // reorder components so title is on top
+                    gm.waste.wasteTitle.setVisible(true);               // display title
 
-                createTitle(gm.items.icons.get("waste" + (nextItem + 1) + ".png"), gm.ui.level);
-                gm.waste.wasteTitle.setVisible(true);
+                    gm.ui.window.revalidate();
+                    gm.ui.window.repaint();
 
-                gm.waste.waste.revalidate();
-                gm.waste.waste.repaint();
+                    count = 0;
+                } else {
 
-                //gm.waste.wasteTitle.revalidate();
-                //gm.waste.wasteTitle.repaint();
+                    JOptionPane.showMessageDialog(null, "Good job monkey u did it");
 
+                    gm.waste.icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste" + (nextItem + 1) + ".png"));
+                    gm.waste.waste.setIcon(gm.waste.icon);
+                    //gm.waste.waste.setBounds(810, 175, gm.waste.icon.getIconWidth(), gm.waste.icon.getIconHeight());
+
+                    int origWindowW = gm.resizer.origSizeWidth;
+                    int origWindowH = gm.resizer.origSizeHeight;
+                    int curW = gm.ui.window.getWidth();
+                    int curH = gm.ui.window.getHeight();
+                    float scaleX = (float) curW / origWindowW;
+                    float scaleY = (float) curH / origWindowH;
+
+                    int scaledX = Math.round(810 * scaleX);
+                    int scaledY = Math.round(175 * scaleY);
+
+                    gm.waste.waste.setLocation(scaledX, scaledY);
+
+                    gm.waste.waste.setVisible(true);
+
+                    createTitle(gm.items.icons.get("waste" + (nextItem + 1) + ".png"), gm.ui.level);
+                    gm.waste.wasteTitle.setVisible(true);
+
+                    gm.ui.bgPanel[gm.ui.level].setComponentZOrder(gm.waste.waste, 0);
+                    gm.ui.bgPanel[gm.ui.level].setComponentZOrder(gm.waste.wasteTitle, 0);
+
+                    gm.waste.waste.revalidate();
+                    gm.waste.waste.repaint();
+
+                    gm.waste.wasteTitle.revalidate();
+                    gm.waste.wasteTitle.repaint();
+                }
             } else {
                 gm.waste.waste.setLocation(810, 175);
                 JOptionPane.showMessageDialog(null, "try again bozo");
