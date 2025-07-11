@@ -40,22 +40,12 @@ public class wastePanel extends JPanel {
         gm.drop.createTitle(key, gm.ui.level);
         wasteTitle.setBounds(810, 100, imgW, imgH);
         gm.ui.bgPanel[lvlScreen].add(wasteTitle);
-        gm.resizer.registerOriginalBounds(wasteTitle);
         gm.ui.bgPanel[gm.ui.level].setComponentZOrder(wasteTitle, 0);
-
-       /* waste.setBounds(810, 175, imgW, imgH);
-        gm.resizer.registerOriginalBounds(waste);
-        waste.setIcon(icon);
-        gm.ui.bgPanel[lvlScreen].add(waste);
-        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(waste, 0); */
 
         waste.setBounds(810, 175, imgW, imgH);
         gm.ui.bgPanel[lvlScreen].add(waste);
-        gm.resizer.registerOriginalBounds(waste);
         waste.setIcon(icon);
         gm.ui.bgPanel[gm.ui.level].setComponentZOrder(waste, 0);
-
-      // gm.resizer.registerOriginalBounds(waste);
 
         JLabel compost = gm.drop.compost(lvlScreen);
         JLabel recycle = gm.drop.recycle(lvlScreen);

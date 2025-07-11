@@ -5,16 +5,16 @@ public class gmManager {
     public dropZone drop;
     public wastePanel waste;
     public UI ui;
-    public resizer resizer;
     public wasteItems items;
+    public fader fade;
 
     public gmManager() {
 
         items = new wasteItems(this);
-        resizer = new resizer(this);
         waste = new wastePanel(this);
         drop = new dropZone(this);
         ui = new UI(this);
+        fade = new fader("meow");
 
     }
 

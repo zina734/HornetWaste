@@ -39,28 +39,6 @@ public class UI {
         window.setSize(1920, 1080);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(null); // We'll add a JLayeredPane here
-        game.resizer.origSizeWidth = window.getWidth();
-        game.resizer.origSizeHeight = window.getHeight();
-
-        javax.swing.Timer debounce = new javax.swing.Timer(100, e -> {
-            // this fires 100ms after the last resize event
-            game.resizer.setFastResizeMode(false);
-            Dimension d = window.getSize();
-            game.resizer.resizeAll(d.width, d.height);
-        });
-        debounce.setRepeats(false);
-
-        // 2) install exactly one ComponentListener
-        window.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // immediately go into “fast” mode
-                game.resizer.setFastResizeMode(true);
-                // restart (or start) the debounce timer
-                debounce.restart();
-            }
-        });
-
 
     }
 
@@ -85,7 +63,6 @@ public class UI {
         ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(name));      // uses parameter to load image into a icon variable
         bgLabel[num].setIcon(icon);                                                         // Add the image to the passed in index label (image array)
         bgPanel[num].add(bgLabel[num]);         // Add the label to the passed index panel (Collection of labels)
-        game.resizer.registerOriginalBounds(bgLabel[num]);
         bgPanel[num].setComponentZOrder(bgLabel[num], bgPanel[num].getComponentCount() - 1);
 
     }
@@ -131,8 +108,7 @@ public class UI {
         });
 
         bgPanel[num].add(button);                                      // After adding the mouse listener, add the button to the original panel
-        game.resizer.registerOriginalBounds(button);
-        bgPanel[num].add(bgLabel[num]);                                //
+        bgPanel[num].add(bgLabel[num]);
     }
 
     public void createLevelSelect() {
@@ -141,7 +117,6 @@ public class UI {
         ImageIcon newBgIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Levelscreen.png")); // Load background image
         bgLabel[level].setIcon(newBgIcon); // Set background image
         bgPanel[level].add(bgLabel[level]); // Add background to the panel
-        game.resizer.registerOriginalBounds(bgLabel[level]);
         window.add(bgPanel[level]);
 
         JLabel exitButton = new JLabel();
@@ -156,10 +131,13 @@ public class UI {
                     int oldLevel = level;         // level screen
                     int newLevel = level - 1;     // level select screen
 
-                    bgPanel[oldLevel].setVisible(false);      // hide current screen
+                    bgPanel[1].setVisible(false);      // hide current screen
                     level = newLevel;                         // update level tracker
                     window.setComponentZOrder(bgPanel[newLevel], 0);            // re-order components so proper panel is on top
-                    bgPanel[newLevel].setVisible(true);               // display level select screen
+                    bgPanel[0].setVisible(true);               // display level select screen
+
+                    window.revalidate();
+                    window.repaint();
                 }
             }
 
@@ -170,7 +148,6 @@ public class UI {
         });
 
         bgPanel[level].add(exitButton);
-        game.resizer.registerOriginalBounds(exitButton);
         bgPanel[level].setComponentZOrder(exitButton, 0);
 
 
@@ -201,6 +178,8 @@ public class UI {
                 public void mousePressed(MouseEvent e) {
                     if (SwingUtilities.isLeftMouseButton(e)) {
                         bgPanel[level].setVisible(false); // Hide the current screen (level selection screen)
+                        // level = finalI;       // debugging output
+                        System.out.println(level);
                         createLevelButton("levelscreen/levelscreen" + finalI + ".png");        // create level button functionalities
                     }
                 }
@@ -212,7 +191,6 @@ public class UI {
             });
 
             bgPanel[level].add(levelButton);
-            game.resizer.registerOriginalBounds(levelButton);
             bgPanel[level].setComponentZOrder(levelButton, 0);
 
 
@@ -223,7 +201,11 @@ public class UI {
 
 
     public void createLevelButton(String name) {
-        level = level + 1;
+
+        if (level <= 5)
+            level = level + 1;
+
+        // System.out.println(level);      // debugging output
 
         if (bgPanel[level] == null) {
             bgPanel[level] = new JPanel(null);
@@ -242,10 +224,10 @@ public class UI {
         ImageIcon levelBgIcon = new ImageIcon(getClass().getClassLoader().getResource(name));
         bgLabel[level].setIcon(levelBgIcon);
         bgPanel[level].add(bgLabel[level]);
-        game.resizer.registerOriginalBounds(bgLabel[level]);
 
         // Move background to the back, draggable object to front
 
+        bgPanel[1].setVisible(false);
         bgPanel[level].setVisible(true);
     }
 }
