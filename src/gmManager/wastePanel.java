@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class wastePanel extends JPanel {
 
-    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste1.png")); // Load image from file
+    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/lvl1/RC3.png")); // Load image from file
     public JLabel waste;
     public JLabel wasteTitle;
     public Point initialClick;
@@ -50,9 +50,7 @@ public class wastePanel extends JPanel {
         JLabel compost = gm.drop.compost(lvlScreen);
         JLabel recycle = gm.drop.recycle(lvlScreen);
         JLabel landfill = gm.drop.landfill(lvlScreen);
-        JLabel drop1 = gm.drop.drop1(lvlScreen);
-        JLabel drop2 = gm.drop.drop2(lvlScreen);
-        JLabel drop3 = gm.drop.drop3(lvlScreen);
+        JLabel eWaste = gm.drop.drop1(lvlScreen);
 
         waste.revalidate();
         waste.repaint();
@@ -103,9 +101,7 @@ public class wastePanel extends JPanel {
                 gm.drop.createZone(compost, 0);
                 gm.drop.createZone(recycle, 1);
                 gm.drop.createZone(landfill, 2);
-                gm.drop.createZone(drop1, 3);
-                gm.drop.createZone(drop2, 4);
-                gm.drop.createZone(drop3, 5);
+                gm.drop.createZone(eWaste, 3);
             }
 
         });

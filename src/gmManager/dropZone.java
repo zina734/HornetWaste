@@ -63,22 +63,6 @@ public class dropZone extends JPanel {
 
     }
 
-    public JLabel drop2(int panel) {                // the 5th one
-        JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(1250, 650, 150, 275);         // location for area object should be dropped to
-        dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-        gm.ui.bgPanel[panel].add(dropZone1);
-        return dropZone1;
-    }
-
-    public JLabel drop3(int panel) {                // the 5th one
-        JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(1450, 650, 150, 275);         // location for area object should be dropped to
-        dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-        gm.ui.bgPanel[panel].add(dropZone1);
-        return dropZone1;
-    }
-
     public void createZone(JLabel bin, int list) {
         int wasteX = gm.waste.waste.getX();
         int wasteY = gm.waste.waste.getY();
@@ -103,14 +87,6 @@ public class dropZone extends JPanel {
             case 3:
                 gm.items.loadEWS();
                 zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.ews);
-                break;
-            case 4:
-                gm.items.loadHRR();
-                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.hrr);
-                break;
-            case 5:
-                gm.items.loadHRS();
-                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.hrs);
                 break;
         }
 

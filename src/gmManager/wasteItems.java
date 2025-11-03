@@ -13,12 +13,10 @@ public class wasteItems {
     // to check if each level has been complete you can iterate through the hashmap values and see if anything is still set to 0, if theyre all not 0 then you can assume the levels have been finished and display the certificate
 
     HashMap<String, String> icons = new HashMap<>() {{
-        put("waste1.png", "bananer");
+        put("lvl1/Comp2.png", "bananer");
         put("waste2.png", "monther drink");
         put("waste3.png", "sus paper");
         put("waste4.png", "red solo cup");
-        put("waste5.png", "touch grass");
-        put("waste6.png", "cardboard bawx");
     }};
 
     HashMap<String, String> cmp = new HashMap<>();
@@ -34,32 +32,28 @@ public class wasteItems {
         this.gm = gm;
     }
 
+    //compost
     public void loadCMP() {
-        cmp.put("waste1.png", "bananer");
+        cmp.put("lvl1/RC3.png", "bananer");
 
     }
 
+    //Recycle
     public void loadRCY() {
         rcy.put("waste2.png", "monther drink");
 
     }
 
+    //Landfill
     public void loadLND() {
         lnd.put("waste3.png", "sus paper");
 
     }
 
+    //Ewaste
     public void loadEWS() {
         ews.put("waste4.png", "red solo cup");
 
     }
 
-    public void loadHRS() {
-        hrs.put("waste5.png", "touch grass");
-
-    }
-
-    public void loadHRR() {
-        hrr.put("waste6.png", "cardboard bawx");
-    }
 }
