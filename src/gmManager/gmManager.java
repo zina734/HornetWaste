@@ -1,5 +1,4 @@
 package gmManager;
-
 public class gmManager {
 
     public dropZone drop;
