@@ -1,10 +1,10 @@
 package gmManager;
 
 import java.awt.*;
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import javax.swing.*;
 
 public class dropZone extends JPanel {
 
@@ -27,11 +27,11 @@ public class dropZone extends JPanel {
 
     public JLabel compost(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(150, 650, 150, 275);
+        dropZone1.setBounds(264, 650, 150, 275);
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         
         JLabel compostLabel = new JLabel("COMPOST");
-        compostLabel.setBounds(175, 925, 100, 30);
+        compostLabel.setBounds(289, 925, 100, 30);
         compostLabel.setFont(new Font("Arial", Font.BOLD, 14));
         compostLabel.setForeground(new Color(34, 139, 34));
         gm.ui.bgPanel[panel].add(compostLabel);
@@ -42,11 +42,11 @@ public class dropZone extends JPanel {
 
     public JLabel recycle(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(500, 650, 150, 275);
+        dropZone1.setBounds(678, 650, 150, 275);
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
         
         JLabel recycleLabel = new JLabel("RECYCLE");
-        recycleLabel.setBounds(525, 925, 100, 30);
+        recycleLabel.setBounds(703, 925, 100, 30);
         recycleLabel.setFont(new Font("Arial", Font.BOLD, 14));
         recycleLabel.setForeground(new Color(0, 120, 215));
         gm.ui.bgPanel[panel].add(recycleLabel);
@@ -57,11 +57,11 @@ public class dropZone extends JPanel {
 
     public JLabel landfill(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(750, 650, 150, 275);
+        dropZone1.setBounds(1092, 650, 150, 275);
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
         
         JLabel landfillLabel = new JLabel("LANDFILL");
-        landfillLabel.setBounds(775, 925, 100, 30);
+        landfillLabel.setBounds(1117, 925, 100, 30);
         landfillLabel.setFont(new Font("Arial", Font.BOLD, 14));
         landfillLabel.setForeground(Color.DARK_GRAY);
         gm.ui.bgPanel[panel].add(landfillLabel);
@@ -72,11 +72,11 @@ public class dropZone extends JPanel {
 
     public JLabel eWaste(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(1000, 650, 150, 275);
+        dropZone1.setBounds(1506, 650, 150, 275);
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
         
         JLabel eWasteLabel = new JLabel("E-WASTE");
-        eWasteLabel.setBounds(1025, 925, 100, 30);
+        eWasteLabel.setBounds(1531, 925, 100, 30);
         eWasteLabel.setFont(new Font("Arial", Font.BOLD, 14));
         eWasteLabel.setForeground(new Color(255, 140, 0));
         gm.ui.bgPanel[panel].add(eWasteLabel);

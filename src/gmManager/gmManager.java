@@ -20,5 +20,5 @@ public class gmManager {
     public static void main(String[] args) {
         System.out.println("Starting Hornet Waste Sorting Game...");
         new gmManager();
-    }
+    } 
 }

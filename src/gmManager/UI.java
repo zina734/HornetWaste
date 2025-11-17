@@ -109,7 +109,7 @@ public class UI {
         ImageIcon exitIcon = new ImageIcon(getClass().getClassLoader().getResource("images/exit.png"));
         int exitWidth = exitIcon.getIconWidth();
         int exitHeight = exitIcon.getIconHeight();
-        exitButton.setBounds(960 - (exitWidth/2), 600, exitWidth, exitHeight);
+        exitButton.setBounds(960 - (exitWidth/2), 725, exitWidth, exitHeight);
         exitButton.setIcon(exitIcon);
 
         exitButton.addMouseListener(new MouseListener() {
@@ -150,9 +150,16 @@ public class UI {
                 
                 // set button position (top or bottom row) with proper sizing
                 if (i < 3) {
-                    levelButton.setBounds(600 + (i * spacing), 110, btnWidth, btnHeight);
+                    // Center level 2 (i=1) at 960px, treat all 5 buttons as one unit
+                    int centerX = 960 - (btnWidth / 2); // Center for level 2
+                    levelButton.setBounds(centerX - (spacing * (1 - i)), 335, btnWidth, btnHeight);
                 } else {
-                    levelButton.setBounds(450 + ((i - 2) * spacing), 260, btnWidth, btnHeight);
+                    // Position levels 4-5 with their collective middle at 960px
+                    // Level 4 center at 810, Level 5 center at 1110
+                    int level4Center = 810;
+                    int level5Center = 1110;
+                    int targetCenter = (i == 3) ? level4Center : level5Center;
+                    levelButton.setBounds(targetCenter - (btnWidth / 2), 485, btnWidth, btnHeight);
                 }
             } else {
                 System.out.println("Image not found: lvl" + (i + 1) + ".png");
