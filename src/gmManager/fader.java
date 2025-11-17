@@ -5,14 +5,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A JLabel that displays text with a fade-out animation effect.
+ */
 public class fader extends JLabel {
     private float alpha = 0.75f;
 
     public fader(String text) {
         super(text);
         setForeground(new Color(255, 255, 255, 255));
+        setFont(new Font("Arial", Font.BOLD, 16));
     }
 
+    /**
+     * Starts the fade-out animation for this label.
+     */
     public void fadeOut() {
         Timer timer = new Timer(50, null);
         timer.addActionListener(new ActionListener() {
@@ -22,6 +29,7 @@ public class fader extends JLabel {
                 if (alpha <= 0) {
                     alpha = 0;
                     timer.stop();
+                    setVisible(false);
                 }
                 repaint();
             }
@@ -39,3 +47,4 @@ public class fader extends JLabel {
         g2.dispose();
     }
 }
+

@@ -2,68 +2,90 @@ package gmManager;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.BorderFactory;
-
 import java.util.HashMap;
+import java.util.Random;
 
 public class dropZone extends JPanel {
 
-    int certCheck = 0;
     gmManager gm;
-    int count;
-    ArrayList<String> cor = new ArrayList<>();
-    String newItem;
+    int correctCount;
+    ArrayList<String> usedItems = new ArrayList<>();
+    int currentLevelNumber;
+    String currentItemPath;
 
     public dropZone(gmManager gm) {
         this.gm = gm;
+        correctCount = 0;
+    }
 
+    public void resetLevel(int levelNum) {
+        correctCount = 0;
+        usedItems.clear();
+        currentLevelNumber = levelNum;
     }
 
     public JLabel compost(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(150, 650, 150, 275);         // location for area object should be dropped to
+        dropZone1.setBounds(150, 650, 150, 275);
         dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        
+        JLabel compostLabel = new JLabel("COMPOST");
+        compostLabel.setBounds(175, 925, 100, 30);
+        compostLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        compostLabel.setForeground(new Color(34, 139, 34));
+        gm.ui.bgPanel[panel].add(compostLabel);
+        
         gm.ui.bgPanel[panel].add(dropZone1);
         return dropZone1;
-
     }
 
     public JLabel recycle(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(500, 650, 150, 275);         // location for area object should be dropped to
-        dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        dropZone1.setBounds(500, 650, 150, 275);
+        dropZone1.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+        
+        JLabel recycleLabel = new JLabel("RECYCLE");
+        recycleLabel.setBounds(525, 925, 100, 30);
+        recycleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        recycleLabel.setForeground(new Color(0, 120, 215));
+        gm.ui.bgPanel[panel].add(recycleLabel);
+        
         gm.ui.bgPanel[panel].add(dropZone1);
         return dropZone1;
-
     }
 
     public JLabel landfill(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(750, 650, 150, 275);         // location for area object should be dropped to
-        dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        dropZone1.setBounds(750, 650, 150, 275);
+        dropZone1.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        
+        JLabel landfillLabel = new JLabel("LANDFILL");
+        landfillLabel.setBounds(775, 925, 100, 30);
+        landfillLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        landfillLabel.setForeground(Color.DARK_GRAY);
+        gm.ui.bgPanel[panel].add(landfillLabel);
+        
         gm.ui.bgPanel[panel].add(dropZone1);
         return dropZone1;
-
     }
 
-    public JLabel drop1(int panel) {                // ppm surplus
+    public JLabel eWaste(int panel) {
         JLabel dropZone1 = new JLabel();
-        dropZone1.setBounds(1000, 650, 150, 275);         // location for area object should be dropped to
-        dropZone1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        dropZone1.setBounds(1000, 650, 150, 275);
+        dropZone1.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
+        
+        JLabel eWasteLabel = new JLabel("E-WASTE");
+        eWasteLabel.setBounds(1025, 925, 100, 30);
+        eWasteLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        eWasteLabel.setForeground(new Color(255, 140, 0));
+        gm.ui.bgPanel[panel].add(eWasteLabel);
+        
         gm.ui.bgPanel[panel].add(dropZone1);
         return dropZone1;
-
     }
 
-    public void createZone(JLabel bin, int list) {
+    public void createZone(JLabel bin, int binType) {
         int wasteX = gm.waste.waste.getX();
         int wasteY = gm.waste.waste.getY();
         int zoneX = bin.getX();
@@ -71,190 +93,176 @@ public class dropZone extends JPanel {
         int zoneW = bin.getWidth();
         int zoneH = bin.getHeight();
 
-        switch (list) {
+        HashMap<String, String> correctItems = null;
+        
+        switch (binType) {
             case 0:
-                gm.items.loadCMP();            // each load item method will load every correct answer for that bin into the hashmap
-                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.cmp);
+                gm.items.loadCMP();
+                correctItems = gm.items.cmp;
                 break;
             case 1:
                 gm.items.loadRCY();
-                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.rcy);
+                correctItems = gm.items.rcy;
                 break;
             case 2:
                 gm.items.loadLND();
-                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.lnd);
+                correctItems = gm.items.lnd;
                 break;
             case 3:
                 gm.items.loadEWS();
-                zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, gm.items.ews);
+                correctItems = gm.items.ews;
                 break;
         }
-
+        
+        if (correctItems != null) {
+            zoneBounds(wasteX, wasteY, zoneX, zoneY, zoneW, zoneH, correctItems);
+        }
     }
 
     public void createTitle(String name, int lvl) {
-            if (gm.waste.wasteTitle == null) {
-                gm.waste.wasteTitle = new JLabel(name);
-                gm.waste.wasteTitle.setForeground(Color.RED);
-                gm.waste.wasteTitle.setBounds(810, 100, 200, 20);
-                gm.ui.bgPanel[lvl].add(gm.waste.wasteTitle);
-            } else {
-                gm.waste.wasteTitle.setText(name);
-            }
+        if (gm.waste.wasteTitle == null) {
+            gm.waste.wasteTitle = new JLabel(name);
+            gm.waste.wasteTitle.setForeground(Color.BLACK);
+            gm.waste.wasteTitle.setFont(new Font("Arial", Font.BOLD, 18));
+            gm.waste.wasteTitle.setBounds(810, 100, 300, 30);
+            gm.ui.bgPanel[lvl].add(gm.waste.wasteTitle);
+        } else {
+            gm.waste.wasteTitle.setText(name);
+        }
     }
 
-    public void zoneBounds(int wasteX, int wasteY, int binX, int binY, int binW, int binH, HashMap<String, String> items) {
-        Random random = new Random();
-        int nextItem = random.nextInt(6);
+    public void zoneBounds(int wasteX, int wasteY, int binX, int binY, int binW, int binH, HashMap<String, String> correctItems) {
+        
+        // UI Elements - create once and reuse
+        JButton exitButton = new JButton("Back to Level Select");
+        exitButton.setBounds(810, 225, 210, 40);
+        exitButton.setFocusPainted(false);
+        exitButton.setBorderPainted(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setBackground(new Color(50, 150, 255));
+        exitButton.setForeground(Color.WHITE);
+        exitButton.setOpaque(true);
 
-        ArrayList<String> allItems = new ArrayList<>(gm.items.icons.keySet()); // assume keys are like "waste1.png", etc.
-        ArrayList<String> availableItems = new ArrayList<>();
+        JLabel levelCompleteLabel = new JLabel("Level Complete!");
+        levelCompleteLabel.setBounds(850, 175, 300, 30);
+        levelCompleteLabel.setFont(new Font("Cambria", Font.BOLD, 16));
+        levelCompleteLabel.setForeground(Color.WHITE);
 
-        // exit button customization
-        JButton exit = new JButton("Back to level select");
-        exit.setBounds(810, 225, 210, 40);
-        exit.setFocusPainted(false);
-        exit.setBorderPainted(false);
-        exit.setContentAreaFilled(false);
+        fader successMessage = new fader("Good job!");
+        successMessage.setBounds(810, 150, 200, 20);
+        successMessage.fadeOut();
 
-        exit.setBackground(new Color(50, 150, 255));
-        exit.setForeground(Color.WHITE);
-        exit.setOpaque(true);
+        fader incorrectMessage = new fader("Try again!");
+        incorrectMessage.setBounds(810, 275, 200, 20);
+        incorrectMessage.fadeOut();
 
-        // congrats button customization
-        JLabel congrats = new JLabel("You did it!");                    // set text
-        congrats.setBounds(850, 175, 300, 30);              // set location/text space
-        congrats.setFont(new Font("Cambria", Font.BOLD, 16));           // set font and text size
-        congrats.setForeground(Color.WHITE);                                // set font color
+        gm.ui.bgPanel[gm.ui.level].add(levelCompleteLabel);
+        gm.ui.bgPanel[gm.ui.level].add(exitButton);
+        gm.ui.bgPanel[gm.ui.level].add(successMessage);
+        gm.ui.bgPanel[gm.ui.level].add(incorrectMessage);
 
-        // success msg customization
-        fader flex = new fader("flex on em");               // set text
-        flex.setBounds(810, 150, 200, 20);      // set location
-        flex.fadeOut();                                         // enable fade
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(levelCompleteLabel, 0);
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(exitButton, 0);
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(successMessage, 0);
+        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(incorrectMessage, 0);
 
-        // incorrect msg customization
-        fader oops = new fader("thats a whoopsie");         // set text
-        oops.setBounds(810, 275, 200, 20);      // set location
-        oops.fadeOut();                                             // enable fade
+        levelCompleteLabel.setVisible(false);
+        exitButton.setVisible(false);
+        successMessage.setVisible(false);
+        incorrectMessage.setVisible(false);
 
-        gm.ui.bgPanel[gm.ui.level].add(congrats);          // add congrats msg
-        gm.ui.bgPanel[gm.ui.level].add(exit);              // add exit button
-        gm.ui.bgPanel[gm.ui.level].add(flex);               // add flex msg
-        gm.ui.bgPanel[gm.ui.level].add(oops);               // add oops msg
-
-        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(congrats, 0);        // set congrats msg to top
-        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(exit, 0);            // set exit button to top
-        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(flex, 0);             // set flex msg to top
-        gm.ui.bgPanel[gm.ui.level].setComponentZOrder(oops, 0);
-
-
-        congrats.setVisible(false);
-        exit.setVisible(false);
-        flex.setVisible(false);
-        oops.setVisible(false);
-
+        // Check if waste item is within drop zone bounds
         if (wasteX + 50 > binX && wasteX < binX + binW && wasteY + 50 > binY && wasteY < binY + binH) {
 
             String filePath = gm.waste.icon.toString();
             String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-            // System.out.println(fileName + "\n" + items.keySet().toString());
 
-            boolean approved = items.keySet().toString().contains(fileName);
+            boolean isCorrect = correctItems.keySet().toString().contains(fileName);
 
-            if (approved) {
-                cor.add(fileName);
+            if (isCorrect) {
+                // Correct answer
+                usedItems.add(currentItemPath);
                 gm.waste.wasteTitle.setVisible(false);
                 gm.waste.waste.setVisible(false);
 
-                count += 1;     // keeps track of correct answers
+                correctCount++;
 
-                if(count > 2) {  // if you get the desired amount of questions right
-                    // JOptionPane.showMessageDialog(null, "yay u won buddy yippie");
+                if (correctCount >= 6) {
+                    // Level complete!
+                    int completedLevel = gm.ui.level;
+                    int levelSelectScreen = 1;
 
-                    int oldLevel = gm.ui.level;         // level screen
-                    int newLevel = 1;     // level select screen
+                    exitButton.setVisible(true);
+                    levelCompleteLabel.setVisible(true);
 
-                    exit.setVisible(true);          // display exit when they get 3 right
-                    congrats.setVisible(true);      // display congrats when they get 3 right
+                    // Mark this level as completed
+                    int levelNumber = completedLevel - 1;
+                    gm.items.completeLevel(levelNumber);
 
-                    exit.addActionListener(e -> {
-                        gm.ui.bgPanel[oldLevel].setVisible(false);      // hide current screen
-                        gm.ui.level = newLevel;                         // update level tracker
-                        gm.ui.window.setComponentZOrder(gm.ui.bgPanel[newLevel], 0);            // re-order components so proper panel is on top
-                        gm.ui.bgPanel[newLevel].setVisible(true);               // display level select screen
+                    exitButton.addActionListener(e -> {
+                        gm.ui.bgPanel[completedLevel].setVisible(false);
+                        gm.ui.level = levelSelectScreen;
+                        gm.ui.window.setComponentZOrder(gm.ui.bgPanel[levelSelectScreen], 0);
+                        gm.ui.bgPanel[levelSelectScreen].setVisible(true);
 
-                        gm.ui.bgPanel[oldLevel].add(gm.waste.wasteTitle);               // add the title to the current screen still
-                        gm.ui.bgPanel[oldLevel].setComponentZOrder(gm.waste.wasteTitle, 0);         // reorder components so title is on top
-                        gm.waste.wasteTitle.setVisible(true);               // display title
+                        exitButton.setVisible(false);
+                        levelCompleteLabel.setVisible(false);
 
-                        exit.setVisible(false);          // remove congrats msg
-                        congrats.setVisible(false);         // remove exit button
-
-                        gm.ui.level = oldLevel;
-
-                        //gm.ui.window.revalidate();
-                        //gm.ui.window.repaint();
-
-                        certCheck++;
-
-                        if (certCheck == 5) {
-                            // add functionality to display the certificate and all that if they reach 5 dubs
-
+                        // Check if all levels are completed
+                        if (gm.items.allLevelsCompleted()) {
+                            gm.ui.showVictoryScreen();
                         }
 
-                        cor.clear();            // clear list of correctly sorted items
-                        availableItems.clear(); // clear list of available items
-                        count = 0;
+                        // Reset level state
+                        usedItems.clear();
+                        correctCount = 0;
                     });
 
                 } else {
-
-                    flex.setVisible(true);
-
-                    gm.waste.icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/waste" + (nextItem + 1) + ".png"));
-
-                    for (String item : allItems) {
-                        if (!cor.contains(item)) {
-                            availableItems.add(item);
-                        }
-                    }
-
-                    if (!availableItems.isEmpty()) {
-                        newItem = availableItems.get(new Random().nextInt(availableItems.size()));     // update item to one not used
-                        gm.waste.icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/" + newItem));
-                        gm.waste.waste.setIcon(gm.waste.icon);
-                        gm.waste.waste.setBounds(810, 175, gm.waste.icon.getIconWidth(), gm.waste.icon.getIconHeight());
-
-                        // Set title
-                        createTitle(gm.items.icons.get(newItem), gm.ui.level);
-                        gm.waste.wasteTitle.setVisible(true);
-                    } else {
-                        System.out.println("you shouldn't have gotten here");
-                    }
-
-
-                    gm.waste.waste.setIcon(gm.waste.icon);
-                    gm.waste.waste.setBounds(810, 175, gm.waste.icon.getIconWidth(), gm.waste.icon.getIconHeight());
-
-                    gm.waste.waste.setVisible(true);
-
-                    createTitle(gm.items.icons.get(newItem), gm.ui.level);
-                    gm.waste.wasteTitle.setVisible(true);
-
-                    gm.ui.bgPanel[gm.ui.level].setComponentZOrder(gm.waste.waste, 0);
-                    gm.ui.bgPanel[gm.ui.level].setComponentZOrder(gm.waste.wasteTitle, 0);
-
-                    gm.waste.waste.revalidate();
-                    gm.waste.waste.repaint();
-
-                    gm.waste.wasteTitle.revalidate();
-                    gm.waste.wasteTitle.repaint();
+                    // Show success message and load next item
+                    successMessage.setVisible(true);
+                    
+                    loadNextWasteItem();
                 }
             } else {
+                // Incorrect answer - reset position
                 gm.waste.waste.setLocation(810, 175);
-                oops.setVisible(true);
+                incorrectMessage.setVisible(true);
+            }
+        }
+    }
+
+    private void loadNextWasteItem() {
+        HashMap<String, String> levelItems = gm.items.getLevelItems(currentLevelNumber);
+        ArrayList<String> availableItems = new ArrayList<>();
+
+        for (String itemPath : levelItems.keySet()) {
+            if (!usedItems.contains(itemPath)) {
+                availableItems.add(itemPath);
             }
         }
 
+        if (!availableItems.isEmpty()) {
+            Random random = new Random();
+            currentItemPath = availableItems.get(random.nextInt(availableItems.size()));
+            
+            gm.waste.icon = new ImageIcon(getClass().getClassLoader().getResource("images/waste/" + currentItemPath));
+            gm.waste.waste.setIcon(gm.waste.icon);
+            gm.waste.waste.setBounds(810, 175, gm.waste.icon.getIconWidth(), gm.waste.icon.getIconHeight());
+
+            String itemName = levelItems.get(currentItemPath);
+            createTitle(itemName, gm.ui.level);
+            
+            gm.waste.wasteTitle.setVisible(true);
+            gm.waste.waste.setVisible(true);
+
+            gm.ui.bgPanel[gm.ui.level].setComponentZOrder(gm.waste.waste, 0);
+            gm.ui.bgPanel[gm.ui.level].setComponentZOrder(gm.waste.wasteTitle, 0);
+
+            gm.waste.waste.revalidate();
+            gm.waste.waste.repaint();
+            gm.waste.wasteTitle.revalidate();
+            gm.waste.wasteTitle.repaint();
+        }
     }
 }

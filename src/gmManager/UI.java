@@ -1,10 +1,10 @@
 package gmManager;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.*;
 import java.net.URL;
-import java.awt.*;
+import javax.swing.*;
 
 public class UI {
     gmManager game;
@@ -191,5 +191,56 @@ public class UI {
         // hide old level and show new one
         bgPanel[1].setVisible(false);
         bgPanel[level].setVisible(true);
+    }
+
+    // Show victory screen when all levels are completed
+    public void showVictoryScreen() {
+        int victoryPanelIndex = 7;
+        
+        if (bgPanel[victoryPanelIndex] == null) {
+            bgPanel[victoryPanelIndex] = new JPanel(null);
+            bgPanel[victoryPanelIndex].setBounds(0, 0, 1920, 1080);
+            bgPanel[victoryPanelIndex].setBackground(new Color(50, 200, 100));
+            window.add(bgPanel[victoryPanelIndex]);
+
+            // Victory message
+            JLabel victoryLabel = new JLabel("Congratulations on winning!");
+            victoryLabel.setBounds(600, 400, 800, 100);
+            victoryLabel.setFont(new Font("Arial", Font.BOLD, 48));
+            victoryLabel.setForeground(Color.WHITE);
+            victoryLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            bgPanel[victoryPanelIndex].add(victoryLabel);
+
+            // Secondary message
+            JLabel subLabel = new JLabel("You've completed all 5 levels!");
+            subLabel.setBounds(600, 500, 800, 50);
+            subLabel.setFont(new Font("Arial", Font.PLAIN, 32));
+            subLabel.setForeground(Color.WHITE);
+            subLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            bgPanel[victoryPanelIndex].add(subLabel);
+
+            // Return to start button
+            JButton returnButton = new JButton("Return to Start");
+            returnButton.setBounds(810, 600, 300, 60);
+            returnButton.setFont(new Font("Arial", Font.BOLD, 20));
+            returnButton.setFocusPainted(false);
+            returnButton.addActionListener(e -> {
+                bgPanel[victoryPanelIndex].setVisible(false);
+                level = 0;
+                window.setComponentZOrder(bgPanel[0], 0);
+                bgPanel[0].setVisible(true);
+                
+                // Reset all level completions
+                for (int i = 1; i <= 5; i++) {
+                    game.items.levelCompleted.put(i, false);
+                }
+            });
+            bgPanel[victoryPanelIndex].add(returnButton);
+        }
+
+        // Hide current panel and show victory screen
+        bgPanel[1].setVisible(false);
+        window.setComponentZOrder(bgPanel[victoryPanelIndex], 0);
+        bgPanel[victoryPanelIndex].setVisible(true);
     }
 }

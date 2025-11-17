@@ -9,20 +9,16 @@ public class gmManager {
     public fader fade;
 
     public gmManager() {
-
         items = new wasteItems(this);
         waste = new wastePanel(this);
         drop = new dropZone(this);
         ui = new UI(this);
-        fade = new fader("meow");
-
+        fade = new fader("Game starting...");
     }
 
-    // instantiate the UI
+    // Main entry point for the game
     public static void main(String[] args) {
-        System.out.println("Hello, World! itz zina");       // super duper dumdum comment
-        new gmManager();                                     // start the game
-
+        System.out.println("Starting Hornet Waste Sorting Game...");
+        new gmManager();
     }
-
 }
