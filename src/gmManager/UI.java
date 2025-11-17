@@ -24,12 +24,17 @@ public class UI {
         window = new JFrame();
         window.setSize(1920, 1080);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.getContentPane().setBackground(new Color(0x014E38));
         window.setLayout(null); // manual layout positioning
     }
 
     public void startScreen() {
         createBackground(0, "images/background.png");
-        createStartButton(0, 800, 405, 250, 100, "PlayNow.png");
+        // Load PlayNow button with actual image dimensions
+        ImageIcon playIcon = new ImageIcon(getClass().getClassLoader().getResource("images/PlayNow.png"));
+        int playWidth = playIcon.getIconWidth();
+        int playHeight = playIcon.getIconHeight();
+        createStartButton(0, 960 - (playWidth/2), 540 - (playHeight/2), playWidth, playHeight, "PlayNow.png");
         bgPanel[0].add(bgLabel[0]);
     }
 
@@ -37,6 +42,7 @@ public class UI {
     public void createBackground(int num, String name) {
         bgPanel[num] = new JPanel();
         bgPanel[num].setBounds(0, 0, 1920, 1080);
+        bgPanel[num].setBackground(new Color(0x014E38));
         bgPanel[num].setLayout(null);
         window.add(bgPanel[num]);
 
@@ -100,8 +106,10 @@ public class UI {
 
         // exit button to return to start screen
         JLabel exitButton = new JLabel();
-        exitButton.setBounds(800, 600, 250, 100);
         ImageIcon exitIcon = new ImageIcon(getClass().getClassLoader().getResource("images/exit.png"));
+        int exitWidth = exitIcon.getIconWidth();
+        int exitHeight = exitIcon.getIconHeight();
+        exitButton.setBounds(960 - (exitWidth/2), 600, exitWidth, exitHeight);
         exitButton.setIcon(exitIcon);
 
         exitButton.addMouseListener(new MouseListener() {
@@ -130,17 +138,22 @@ public class UI {
         for (int i = 0; i < 5; i++) {
             JLabel levelButton = new JLabel();
 
-            // set button position (top or bottom row)
-            if (i < 3) {
-                levelButton.setBounds(600 + (i * 300), 110, 200, 75);
-            } else {
-                levelButton.setBounds(450 + ((i - 2) * 300), 260, 200, 75);
-            }
-
             // load button image
             URL objURL = getClass().getClassLoader().getResource("levels/lvl" + (i + 1) + ".png");
             if (objURL != null) {
-                levelButton.setIcon(new ImageIcon(objURL));
+                ImageIcon levelIcon = new ImageIcon(objURL);
+                levelButton.setIcon(levelIcon);
+                
+                int btnWidth = levelIcon.getIconWidth();
+                int btnHeight = levelIcon.getIconHeight();
+                int spacing = 300; // horizontal spacing between buttons
+                
+                // set button position (top or bottom row) with proper sizing
+                if (i < 3) {
+                    levelButton.setBounds(600 + (i * spacing), 110, btnWidth, btnHeight);
+                } else {
+                    levelButton.setBounds(450 + ((i - 2) * spacing), 260, btnWidth, btnHeight);
+                }
             } else {
                 System.out.println("Image not found: lvl" + (i + 1) + ".png");
             }
@@ -171,10 +184,11 @@ public class UI {
         if (level <= 5)
             level = level + 1;
 
-        // if this panel doesn’t exist yet, make it
+        // if this panel doesn't exist yet, make it
         if (bgPanel[level] == null) {
             bgPanel[level] = new JPanel(null);
             bgPanel[level].setBounds(0, 0, 1920, 1080);
+            bgPanel[level].setBackground(new Color(0x014E38));
             window.add(bgPanel[level]);
         }
 
@@ -200,7 +214,7 @@ public class UI {
         if (bgPanel[victoryPanelIndex] == null) {
             bgPanel[victoryPanelIndex] = new JPanel(null);
             bgPanel[victoryPanelIndex].setBounds(0, 0, 1920, 1080);
-            bgPanel[victoryPanelIndex].setBackground(new Color(50, 200, 100));
+            bgPanel[victoryPanelIndex].setBackground(new Color(0x014E38));
             window.add(bgPanel[victoryPanelIndex]);
 
             // Victory message
